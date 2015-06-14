@@ -1,0 +1,43 @@
+@using (Html.BeginForm("UploadImage", "Post", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{ 
+    <input type="file" name="file" />
+    <input type="submit" name="Submit" id="Submit" value="Upload" />
+}
+//hidden field
+
+new method in PostController
+
+ActionResult uploadImage(HttpPostedFileBase file) {
+	
+ if (file != null && file.ContentLength > 0)
+           {
+               var fileName = Path.GetFileName(file.FileName);
+               var path = Path.Combine(Server.MapPath("~/Images/"), fileName);
+               file.SaveAs(path);
+           }
+
+           return RedirectToAction("Index");
+	
+}
+--------------------
+@Html.DropDownListFor(model => model.AvailableTags)
+--------------------
+<div class="form-group">            @Html.LabelFor(model = model.AvailableTags, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+            
+            <ul>
+                @foreach(var tag in Model.AvailableTags) {
+                <li>
+                @Html.EditorFor(tag => tag.TagName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(tag => tag.TagName, "", new { @class = "text-danger" })
+                </li>
+}
+            </ul>
+            </div>
+        </div>
+-------------------------
+<div class="col-md-10">
+                @Html.EditorFor(model => model.AvailableTags, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.AvailableTags, "", new { @class = "text-danger" })
+            </div>
+-------------------------------------
