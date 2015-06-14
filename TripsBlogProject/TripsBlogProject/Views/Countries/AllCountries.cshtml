@@ -1,0 +1,29 @@
+﻿
+@model IEnumerable<TripsBlogProject.Models.Country>
+
+@{
+    ViewBag.Title = "All countries";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>All countries</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(item.Name, "Details", new { id = item.CountryId })
+            </td>
+        </tr>
+    }
+
+</table>
+
+

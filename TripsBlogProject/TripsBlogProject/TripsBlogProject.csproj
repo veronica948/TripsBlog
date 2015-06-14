@@ -159,11 +159,37 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CountriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201506141539072_2015-06-04-01.cs" />
+    <Compile Include="Migrations\201506141539072_2015-06-04-01.Designer.cs">
+      <DependentUpon>201506141539072_2015-06-04-01.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506141552121_2015-06-04-02.cs" />
+    <Compile Include="Migrations\201506141552121_2015-06-04-02.Designer.cs">
+      <DependentUpon>201506141552121_2015-06-04-02.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506141554446_2015-06-14-03.cs" />
+    <Compile Include="Migrations\201506141554446_2015-06-14-03.Designer.cs">
+      <DependentUpon>201506141554446_2015-06-14-03.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506141627000_2015-06-14-04.cs" />
+    <Compile Include="Migrations\201506141627000_2015-06-14-04.Designer.cs">
+      <DependentUpon>201506141627000_2015-06-14-04.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506141631483_2015-06-14-05.cs" />
+    <Compile Include="Migrations\201506141631483_2015-06-14-05.Designer.cs">
+      <DependentUpon>201506141631483_2015-06-14-05.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506141652558_2015-06-14-06.cs" />
+    <Compile Include="Migrations\201506141652558_2015-06-14-06.Designer.cs">
+      <DependentUpon>201506141652558_2015-06-14-06.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Country.cs" />
     <Compile Include="Models\CountryImage.cs" />
@@ -231,8 +257,15 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
+    <Content Include="Views\Countries\Create.cshtml" />
+    <Content Include="Views\Countries\Delete.cshtml" />
+    <Content Include="Views\Countries\Details.cshtml" />
+    <Content Include="Views\Countries\Edit.cshtml" />
+    <Content Include="Views\Countries\Index.cshtml" />
+    <Content Include="Views\Countries\AllCountries.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Additional\" />
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
@@ -241,6 +274,26 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201506141539072_2015-06-04-01.resx">
+      <DependentUpon>201506141539072_2015-06-04-01.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506141552121_2015-06-04-02.resx">
+      <DependentUpon>201506141552121_2015-06-04-02.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506141554446_2015-06-14-03.resx">
+      <DependentUpon>201506141554446_2015-06-14-03.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506141627000_2015-06-14-04.resx">
+      <DependentUpon>201506141627000_2015-06-14-04.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506141631483_2015-06-14-05.resx">
+      <DependentUpon>201506141631483_2015-06-14-05.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506141652558_2015-06-14-06.resx">
+      <DependentUpon>201506141652558_2015-06-14-06.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

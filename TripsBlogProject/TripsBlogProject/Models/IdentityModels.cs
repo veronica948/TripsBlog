@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Collections.Generic;
 
 namespace TripsBlogProject.Models
 {
@@ -16,6 +17,7 @@ namespace TripsBlogProject.Models
             // Add custom user claims here
             return userIdentity;
         }
+        public List<Post> posts;
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -29,5 +31,7 @@ namespace TripsBlogProject.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<TripsBlogProject.Models.Country> Countries { get; set; }
     }
 }
