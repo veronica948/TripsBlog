@@ -32,7 +32,8 @@
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id=item.CountryId }) |
-                @Html.ActionLink("Details", "Details", new { id=item.CountryId })
+                @Html.ActionLink("Details", "Details", new { id=item.CountryId })|
+                @Html.ActionLink("Upload new image", "UploadImage", new { id = item.CountryId })
                 @* |
                     @Html.ActionLink("Delete", "Delete", new { id=item.CountryId })
 *@

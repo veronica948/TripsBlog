@@ -263,10 +263,12 @@
     <Content Include="Views\Countries\Edit.cshtml" />
     <Content Include="Views\Countries\Index.cshtml" />
     <Content Include="Views\Countries\AllCountries.cshtml" />
+    <Content Include="Views\Countries\UploadImage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Additional\" />
     <Folder Include="App_Data\" />
+    <Folder Include="Images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

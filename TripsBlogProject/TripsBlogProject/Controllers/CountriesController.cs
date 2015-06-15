@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -61,6 +62,49 @@ namespace TripsBlogProject.Controllers
             }
 
             return View(country);
+        }
+
+        //Get Countries/UploadImage/1
+        [HttpGet]
+        public ActionResult UploadImage(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Country country = db.Countries.Find(id);
+            if (country == null)
+            {
+                return HttpNotFound();
+            }
+            return View(country);
+        }
+
+        //Post   Countries/UploadImage/1
+        [HttpPost]
+        ActionResult UploadImage(/*[Bind(Include = "CountryId")] Country country*/ int id, HttpPostedFileBase file)
+        {
+            string newFileName = "";
+            if (file != null && file.ContentLength > 0)
+            {
+                var fileName = Path.GetFileName(file.FileName);
+                string format = file.ContentType;
+                Console.Out.Write(format);
+                newFileName = Guid.NewGuid().ToString(); //global identificator
+                var path = Path.Combine(Server.MapPath("~/Images/"), newFileName); //~ - The root
+                file.SaveAs(path);
+                Country country = db.Countries.Find(id);
+                country.ImageUrl = new CountryImage { ImageSrc = newFileName };
+                db.Entry(country).State = EntityState.Modified;
+                db.SaveChanges();
+                return View(country);/*RedirectToAction("Details/" + country.CountryId);*/
+            }
+            else
+            {
+                Country country = db.Countries.Find(1);
+                return View(country);
+                //return RedirectToAction("UploadImage");
+            }            
         }
 
         // GET: Countries/Edit/5
