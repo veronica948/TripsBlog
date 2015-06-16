@@ -19,12 +19,12 @@ namespace TripsBlogProject.Controllers
         private ApplicationUserManager _userManager;
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Countries
+        // GET: Account/AllUsers
+        [HttpGet]
         [Authorize(Roles = "Admin")]
         public ActionResult AllUsers()
         {            
-             return View(db.Users.ToList());
-            
+             return View(db.Users.ToList());          
         }
 
 

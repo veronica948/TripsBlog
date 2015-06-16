@@ -139,7 +139,7 @@ namespace TripsBlogProject.Controllers
         [Authorize(Roles = "Moderator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "CountryId,Name,Description")] Country country)
+        public ActionResult Edit([Bind(Include = "CountryId,Name,Description,ImageUrl")] Country country)
         {
             if (ModelState.IsValid)
             {
