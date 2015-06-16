@@ -38,7 +38,7 @@ using System.Web.Mvc;
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
-            //var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>());
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
 
             //-------Add roles ----------//
             //var rm = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));

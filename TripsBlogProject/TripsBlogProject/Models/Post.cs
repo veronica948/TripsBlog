@@ -28,7 +28,8 @@ namespace TripsBlogProject.Models
 
         [Required]
         public ApplicationUser Author { get; set; }
-
-        public PostImage  Image {get; set;}
+        
+        [DataType(DataType.ImageUrl)]
+        public string  Image {get; set;}
     }
 }

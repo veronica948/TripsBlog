@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using TripsBlogProject.Models;
 
 namespace TripsBlogProject.Controllers
@@ -16,10 +17,17 @@ namespace TripsBlogProject.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Countries
+        [Authorize(Roles = "Moderator")]
         public ActionResult Index()
         {
-       
-            return View(db.Countries.ToList());
+            //if (Roles.GetRolesForUser().Contains("Moderator"))
+            {
+                return View(db.Countries.ToList());
+            }
+            //else
+            //{
+            //    return View("AllCountries", db.Countries.ToList());
+            //}
         }
         // GET: Countries/all
         public ActionResult All()
@@ -42,6 +50,7 @@ namespace TripsBlogProject.Controllers
         }
 
         // GET: Countries/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             return View();
@@ -51,6 +60,7 @@ namespace TripsBlogProject.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "CountryId,Name,Description")] Country country)
         {
@@ -64,6 +74,7 @@ namespace TripsBlogProject.Controllers
             return View(country);
         }
 
+        [Authorize(Roles = "Moderator")]
         //Get Countries/UploadImage/1
         [HttpGet]
         public ActionResult UploadImage(int? id)
@@ -80,9 +91,10 @@ namespace TripsBlogProject.Controllers
             return View(country);
         }
 
+        [Authorize(Roles = "Moderator")]
         //Post   Countries/UploadImage/1
         [HttpPost]
-        ActionResult UploadImage(/*[Bind(Include = "CountryId")] Country country*/ int id, HttpPostedFileBase file)
+        public ActionResult UploadImage(/*[Bind(Include = "CountryId")] Country country*/ int id, HttpPostedFileBase file)
         {
             string newFileName = "";
             if (file != null && file.ContentLength > 0)
@@ -90,23 +102,22 @@ namespace TripsBlogProject.Controllers
                 var fileName = Path.GetFileName(file.FileName);
                 string format = file.ContentType;
                 Console.Out.Write(format);
-                newFileName = Guid.NewGuid().ToString(); //global identificator
+                newFileName = Guid.NewGuid().ToString() + fileName; //global identificator
                 var path = Path.Combine(Server.MapPath("~/Images/"), newFileName); //~ - The root
                 file.SaveAs(path);
                 Country country = db.Countries.Find(id);
-                country.ImageUrl = new CountryImage { ImageSrc = newFileName };
+                country.ImageUrl = newFileName;
                 db.Entry(country).State = EntityState.Modified;
                 db.SaveChanges();
-                return View(country);/*RedirectToAction("Details/" + country.CountryId);*/
+                return /*View(country);*/ RedirectToAction("Details/" + country.CountryId);
             }
             else
             {
-                Country country = db.Countries.Find(1);
+                Country country = db.Countries.Find(id);
                 return View(country);
-                //return RedirectToAction("UploadImage");
             }            
         }
-
+        [Authorize(Roles = "Moderator")]
         // GET: Countries/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -125,6 +136,7 @@ namespace TripsBlogProject.Controllers
         // POST: Countries/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Moderator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "CountryId,Name,Description")] Country country)
@@ -139,6 +151,7 @@ namespace TripsBlogProject.Controllers
         }
 
         // GET: Countries/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -154,6 +167,7 @@ namespace TripsBlogProject.Controllers
         }
 
         // POST: Countries/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

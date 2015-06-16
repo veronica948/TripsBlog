@@ -17,6 +17,16 @@ namespace TripsBlogProject.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationDbContext db = new ApplicationDbContext();
+
+        // GET: Countries
+        [Authorize(Roles = "Admin")]
+        public ActionResult AllUsers()
+        {            
+             return View(db.Users.ToList());
+            
+        }
+
 
         public AccountController()
         {

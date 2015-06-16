@@ -5,19 +5,16 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
-
 <div>
-    <h4>Country</h4>
+    <h4>@Model.Name</h4>
     <hr />
+    @if (Model.ImageUrl != null)
+    {
+        <img src="~/Images/@Model.ImageUrl" />
+    }
+    
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+      
         @if (Model.Description != null) { 
         <dt>
             @Html.DisplayNameFor(model => model.Description)
@@ -26,16 +23,16 @@
         <dd>
             @Html.DisplayFor(model => model.Description)
         </dd>
-        }
-
-        
+        }     
 
     </dl>
-    @if (Model.ImageUrl != null) { 
-        <img src="@Model.ImageUrl.ImageSrc" />
-    }
+    
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.CountryId }) |
-    @Html.ActionLink("Back to List", "Index")
+    @if (this.User.IsInRole("Moderator") == true) 
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.CountryId }) 
+        <br/>
+    }
+    @Html.ActionLink("Back to List", "All")
 </p>

@@ -17,7 +17,7 @@ namespace TripsBlogProject.Models
             // Add custom user claims here
             return userIdentity;
         }
-        public List<Post> posts;
+        public List<Post> posts { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -34,5 +34,7 @@ namespace TripsBlogProject.Models
 
         public System.Data.Entity.DbSet<TripsBlogProject.Models.Country> Countries { get; set; }
         public System.Data.Entity.DbSet<TripsBlogProject.Models.CountryImage> CountryImages { get; set; }
+
+        public System.Data.Entity.DbSet<TripsBlogProject.Models.ApplicationUser> ApplicationUsers { get; set; }
     }
 }
