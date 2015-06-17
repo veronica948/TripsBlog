@@ -81,10 +81,11 @@ namespace TripsBlogProject.Controllers
             {
                 Country choosenCountry = db.Countries.Find(CreatePost.AllCountries.SelectedCountryId);
                 Post post = new Post { Title = CreatePost.Title, Country = choosenCountry, Place = CreatePost.Place, Description = CreatePost.Description };
+                
                 //var user = User;
                 //var name = User.Identity.GetUserName();
-                // var currentUser = db.Users.First(u => u.UserName == User.Identity.Name);
-                //var currentUser = db.Users.Find("e2c9387c-c042-4b24-a3ba-e440db952895");
+                var currentUser = db.Users.First(u => u.UserName == User.Identity.Name);
+                //var currentUser = db.Users.Find(User.Identity.GetUserId());
                 //var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
                 //var currentUser = userManager.FindByEmail("admin@gmail.com");
                 //var currentUser = new ApplicationUser
@@ -92,7 +93,7 @@ namespace TripsBlogProject.Controllers
                 //    Id = "e2c9387c-c042-4b24-a3ba-e440db952895",
                 //    Email = "admin@gmail.com"
                 //};
-                //post.Author = currentUser;
+                post.Author = currentUser;
                 string newFileName = "";
                 if (file != null && file.ContentLength > 0)
                 {
