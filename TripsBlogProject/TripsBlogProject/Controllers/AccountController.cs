@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using TripsBlogProject.Models;
+using System.Collections.Generic;
 
 namespace TripsBlogProject.Controllers
 {
@@ -23,8 +24,11 @@ namespace TripsBlogProject.Controllers
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public ActionResult AllUsers()
-        {            
-             return View(db.Users.ToList());          
+        {
+            List<ApplicationUser> users = db.Users.ToList();
+            
+             return View(users);  
+            
         }
 
 
