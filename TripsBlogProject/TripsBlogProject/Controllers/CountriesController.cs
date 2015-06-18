@@ -18,6 +18,7 @@ namespace TripsBlogProject.Controllers
 
         // GET: Countries
         [Authorize(Roles = "Moderator")]
+        [HttpGet]
         public ActionResult Index()
         {
             //if (Roles.GetRolesForUser().Contains("Moderator"))
@@ -30,11 +31,13 @@ namespace TripsBlogProject.Controllers
             //}
         }
         // GET: Countries/all
+        [HttpGet]
         public ActionResult All()
         {
             return View("AllCountries",db.Countries.ToList());
         }
         // GET: Countries/Details/5
+        [HttpGet]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -50,6 +53,7 @@ namespace TripsBlogProject.Controllers
         }
 
         // GET: Countries/Create
+        [HttpGet]
         [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
