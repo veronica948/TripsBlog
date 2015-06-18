@@ -16,6 +16,9 @@
             @Html.DisplayNameFor(model => model.Title)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.Country)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Place)
         </th>
         <th>
@@ -33,20 +36,33 @@
             @Html.DisplayFor(modelItem => item.Title)
         </td>
         <td>
+            <a href="Countries/Details/@item.Country.CountryId">
+                @item.Country.Name
+            </a>
+            @Html.ActionLink(item.Country.Name, "Details", "Countries", new { id = item.Country.CountryId })
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.Place)
         </td>
+        
         <td>
             @Html.DisplayFor(modelItem => item.Description)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Image)
+            @if (item.Image != null) { 
+                <img src="~/Images/@item.Image"/>
+            }
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.PostId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.PostId }) |
+            @Html.ActionLink("Details", "Details", new { id = item.PostId })
+            @if (this.User.Identity.Name == item.Author.UserName) { 
+            @*@Html.ActionLink("Edit", "Edit", new { id=item.PostId }) 
+                <br/>*@
+            
+                <br />
             @Html.ActionLink("Delete", "Delete", new { id=item.PostId })
+            }
         </td>
     </tr>
 }
-
 </table>

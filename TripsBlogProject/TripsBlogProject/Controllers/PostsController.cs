@@ -20,7 +20,12 @@ namespace TripsBlogProject.Controllers
         // GET: Posts
         public ActionResult Index()
         {
-            return View(db.Posts.ToList());
+            var posts = db.Posts.Include(p=>p.Author).Include(c=>c.Country).ToList();
+            //foreach (Post post in posts)
+            //{
+            //    post.Author = db.Users.Find();
+            //}
+            return View(posts);
         }
 
         // GET: Posts/Details/5
@@ -30,7 +35,7 @@ namespace TripsBlogProject.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Post post = db.Posts.Find(id);
+            Post post = db.Posts.Include(p=>p.Author).Include(c=>c.Country).First(p=>p.PostId == id);
             if (post == null)
             {
                 return HttpNotFound();
@@ -81,18 +86,7 @@ namespace TripsBlogProject.Controllers
             {
                 Country choosenCountry = db.Countries.Find(CreatePost.AllCountries.SelectedCountryId);
                 Post post = new Post { Title = CreatePost.Title, Country = choosenCountry, Place = CreatePost.Place, Description = CreatePost.Description };
-                
-                //var user = User;
-                //var name = User.Identity.GetUserName();
                 var currentUser = db.Users.First(u => u.UserName == User.Identity.Name);
-                //var currentUser = db.Users.Find(User.Identity.GetUserId());
-                //var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
-                //var currentUser = userManager.FindByEmail("admin@gmail.com");
-                //var currentUser = new ApplicationUser
-                //{
-                //    Id = "e2c9387c-c042-4b24-a3ba-e440db952895",
-                //    Email = "admin@gmail.com"
-                //};
                 post.Author = currentUser;
                 string newFileName = "";
                 if (file != null && file.ContentLength > 0)

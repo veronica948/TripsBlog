@@ -25,13 +25,18 @@
                     @*
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     *@
-                    <li>@Html.ActionLink("Posts", "Index", "Post")</li>
-                    <li>@Html.ActionLink("My posts", "", "Post")</li>
+                    <li>@Html.ActionLink("Posts", "Index", "Posts")</li>
+                    <li>@Html.ActionLink("My posts", "", "Posts")</li>
                     <li>@Html.ActionLink("Countries", "All", "Countries")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
+    </div>
+    <div>
+        <p>
+            @Html.ActionLink("Create New Post", "Create", "Posts")
+        </p>
     </div>
     <div class="container body-content">
         @RenderBody()
