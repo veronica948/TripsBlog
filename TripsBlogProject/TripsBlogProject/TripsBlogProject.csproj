@@ -287,6 +287,7 @@
     <Content Include="Views\Posts\Details.cshtml" />
     <Content Include="Views\Posts\Edit.cshtml" />
     <Content Include="Views\Posts\Index.cshtml" />
+    <Content Include="Views\Home\Administration.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Additional\" />

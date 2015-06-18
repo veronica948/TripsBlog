@@ -28,6 +28,10 @@
                     <li>@Html.ActionLink("Posts", "Index", "Posts")</li>
                     <li>@Html.ActionLink("My posts", "", "Posts")</li>
                     <li>@Html.ActionLink("Countries", "All", "Countries")</li>
+                    @if (this.User.IsInRole("Admin") || this.User.IsInRole("Moderator"))
+                    {
+                        <li>@Html.ActionLink("Administration", "Administration", "Home")</li>
+                    }
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
