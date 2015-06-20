@@ -30,6 +30,13 @@ namespace TripsBlogProject.Controllers
             //    return View("AllCountries", db.Countries.ToList());
             //}
         }
+        [HttpGet]
+        public ActionResult Posts(int id)
+        {
+            var posts = db.Posts.Where(u => u.Country.CountryId == id).Include(p => p.Author).Include(c => c.Country).ToList();
+            return View(posts);
+        }
+
         // GET: Countries/all
         [HttpGet]
         public ActionResult All()

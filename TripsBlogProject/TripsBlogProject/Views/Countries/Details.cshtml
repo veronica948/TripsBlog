@@ -34,5 +34,7 @@
         @Html.ActionLink("Edit", "Edit", new { id = Model.CountryId }) 
         <br/>
     }
-    @Html.ActionLink("Back to List", "All")
+    @Html.ActionLink("Posts about this country", "Posts", new { id = Model.CountryId })
+    <br/>
+    @Html.ActionLink("Back to list of countries", "All")
 </p>

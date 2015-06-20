@@ -9,19 +9,24 @@
 <div>
     <hr />
     <dl class="dl-horizontal">
+    @if (Model.Image != null)
+    {
+        @*<dt>
+                @Html.DisplayNameFor(model => model.Image)
+            </dt>*@
+
+        <dd>
+
+            <img src="~/Images/@Model.Image" />
+        </dd>
+    }
         <dt>
             @Html.DisplayNameFor(model => model.Author)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Author.UserName)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
+        
         <dt>
             @Html.DisplayNameFor(model => model.Country)
         </dt>
@@ -29,7 +34,7 @@
             <a href="Countries/Details/@Model.Country.CountryId">
                 @Model.Country.Name
             </a>
-            @Html.ActionLink(Model.Country.Name, "Details", "Countries", new { id = Model.Country.CountryId })
+            @*@Html.ActionLink(Model.Country.Name, "Details", "Countries", new { id = Model.Country.CountryId })*@
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Place)
@@ -46,25 +51,14 @@
         <dd>
             @Html.DisplayFor(model => model.Description)
         </dd>
-        @if (Model.Image != null)
-        {
-            <dt>
-                @Html.DisplayNameFor(model => model.Image)
-            </dt>
-
-            <dd>
-                
-                <img src="~/Images/@Model.Image" />
-            </dd>
-          }
+        
+          
 
     </dl>
 </div>
 <p>
     @if (this.User.Identity.Name == Model.Author.UserName) {
-        @*@Html.ActionLink("Edit", "Edit", new { id = Model.PostId })
-        <br />*@
         @Html.ActionLink("Delete", "Delete", new { id = Model.PostId })
     }
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to all posts", "Index")
 </p>
