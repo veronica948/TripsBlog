@@ -42,40 +42,44 @@ namespace TripsBlogProject.Controllers
         // GET: Account/EditRoles/1
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public ActionResult AddRoles(String id)
+        public ActionResult EditRoles(String id)
         {
             ApplicationUser user = db.Users.Find(id);
             var um = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
             var rm = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
             List<IdentityRole> roles = rm.Roles.ToList();
-            var outObj = roles.Select(row => new SelectListItem() 
-            { Text = row.Name, Value = row.Id, Selected = false });
-            CheckBoxListViewModel checkBox = new CheckBoxListViewModel { Items = outObj };
-            UserRolesViewModel model = new UserRolesViewModel { User = user, Roles = checkBox };
+            List<CheckRolesListBoxItem> checkRoles = new List<CheckRolesListBoxItem>();
+            bool isUserRole;
+            foreach (IdentityRole role in roles)
+            {
+                isUserRole = um.IsInRole(id, role.Name);
+                checkRoles.Add(new CheckRolesListBoxItem { RoleId = role.Id, RoleName = role.Name, IsCheck = isUserRole });
+            }
+            var outObj = checkRoles.Select(row => new SelectListItem() 
+            { Text = row.RoleName, Value = row.RoleId, Selected = row.IsCheck });
+            UserRolesViewModel model = new UserRolesViewModel { User = user, Roles = outObj };
             return View(model);
 
         }
         // GET: Account/EditRoles/1
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public ActionResult AddRoles(UserRolesViewModel model)
+        public ActionResult EditRoles(UserRolesViewModel model)
         {
             ApplicationUser user = model.User;
             string id = user.Id;
             var um = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
             var rm = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
-            string selected = Request.Form["SelectedRoles"];//.ToString();
+            string selected = Request.Form["SelectedRoles"];
             string[] selectedList = selected.Split(',');
             List<IdentityRole> allRoles = rm.Roles.ToList();
             string roleId;
             string roleName;
-            bool isUserRole;
-            
+            bool isUserRole;          
             foreach(IdentityRole role in allRoles) {
                 roleId = role.Id;
                 roleName = role.Name;
-                isUserRole = um.IsInRole(id, roleName);//user.Roles.ToList().Contains(new IdentityUserRole { RoleId = roleId, UserId = id });
-                //isUserRole = user.Roles;
+                isUserRole = um.IsInRole(id, roleName);
                 if(selectedList.Contains(roleId)) {
                     if(!isUserRole) {
                         um.AddToRole(id,roleName);

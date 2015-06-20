@@ -1,6 +1,6 @@
 ﻿@model TripsBlogProject.Models.UserRolesViewModel
 @{
-    ViewBag.Title = "AddRoles";
+    ViewBag.Title = "EditRoles";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -13,7 +13,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.Roles, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @foreach (var role in Model.Roles.Items)
+            @foreach (var role in Model.Roles)
             {
                 @Html.CheckBox("SelectedRoles", role.Selected, new { value = role.Value });
                 <span>@role.Text</span>

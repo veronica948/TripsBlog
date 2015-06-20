@@ -47,13 +47,12 @@ namespace TripsBlogProject.Models
     {
         public ApplicationUser User { get; set; }
         public List<string> UserRoles { get; set; }
-        public List<IdentityRole> Roles { get; set; }
 
     }
     public class UserRolesViewModel
     {
         public ApplicationUser User { get; set; }
-        public CheckBoxListViewModel Roles { get; set; }
+        public IEnumerable<SelectListItem> Roles { get; set; }
 
     }
     /*
@@ -63,16 +62,16 @@ namespace TripsBlogProject.Models
         public string Value { get; set; } 
     }   */    
     // view model for checklistbox     
-    public class CheckBoxListViewModel     {
-        public IEnumerable<SelectListItem> Items { get; set; }          
+   // public class CheckBoxListViewModel     {
+        //public IEnumerable<SelectListItem> Items { get; set; }          
         // the name of this list should be the same as of the CheckBoxes otherwise you will not get any result after post        
-        public List<string> SelectedValues { get; set; }     
-    }      
+        //public List<string> SelectedValues { get; set; }     
+    //}      
 // represents single check box item     
-    /*
+    
     public class CheckRolesListBoxItem     {         
-        public string Value { get; set; }         
-        public string Text { get; set; }         
+        public string RoleId { get; set; }         
+        public string RoleName { get; set; }         
         public bool IsCheck { get; set; }     
-   }*/
+   }
 }
