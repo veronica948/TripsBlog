@@ -70,10 +70,12 @@ namespace TripsBlogProject.Controllers
             string roleId;
             string roleName;
             bool isUserRole;
+            
             foreach(IdentityRole role in allRoles) {
                 roleId = role.Id;
                 roleName = role.Name;
-                isUserRole = user.Roles.Contains(new IdentityUserRole { RoleId = roleId, UserId = id});
+                isUserRole = um.IsInRole(id, roleName);//user.Roles.ToList().Contains(new IdentityUserRole { RoleId = roleId, UserId = id });
+                //isUserRole = user.Roles;
                 if(selectedList.Contains(roleId)) {
                     if(!isUserRole) {
                         um.AddToRole(id,roleName);
