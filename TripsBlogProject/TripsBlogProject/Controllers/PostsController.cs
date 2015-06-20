@@ -18,26 +18,25 @@ namespace TripsBlogProject.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Posts
+        [HttpGet]
         public ActionResult Index()
         {
             var posts = db.Posts.Include(p=>p.Author).Include(c=>c.Country).ToList();
-            //foreach (Post post in posts)
-            //{
-            //    post.Author = db.Users.Find();
-            //}
             return View(posts);
         }
 
+        [Authorize]
+        [HttpGet]
         public ActionResult MyPosts()
-        {
-            
+        {         
             ApplicationUser user = db.Users.First(p=>p.UserName == User.Identity.Name);
             string id = user.Id;
-            var posts = db.Posts.Include(p => p.Author).Include(c => c.Country).Select(u => u.Author.Id == id).ToList();
+            var posts = db.Posts.Where(u => u.Author.Id == id).Include(p => p.Author).Include(c => c.Country).ToList();
             return View(posts);
         }
 
         // GET: Posts/Details/5
+        [HttpGet]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -79,15 +78,11 @@ namespace TripsBlogProject.Controllers
             {
                 Countries = GetCountriesList()
             }
-            };
-
-             
+            };           
             return View(model);
         }
 
         // POST: Posts/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [Authorize]
         //[ValidateAntiForgeryToken]
