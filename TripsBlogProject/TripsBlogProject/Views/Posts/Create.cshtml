@@ -34,6 +34,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.AllCountries.SelectedCountryId, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
+                @*@Html.CheckBox("group1", new Dictionary<string, object> { { "id", 1 } }) "fdjfkdfjk"<br />*@
+                
                 @Html.DropDownListFor(m => m.AllCountries.SelectedCountryId, Model.AllCountries.Countries)
                 @Html.ValidationMessageFor(model => model.Place, "", new { @class = "text-danger" })
             </div>

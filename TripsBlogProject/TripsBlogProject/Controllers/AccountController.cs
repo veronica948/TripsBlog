@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using TripsBlogProject.Models;
 using System.Collections.Generic;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace TripsBlogProject.Controllers
 {
@@ -26,12 +27,67 @@ namespace TripsBlogProject.Controllers
         public ActionResult AllUsers()
         {
             List<ApplicationUser> users = db.Users.ToList();
-            
-             return View(users);  
+            List<UserWithRoles> usersWithRoles = new List<UserWithRoles>();
+
+            var um = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            foreach(ApplicationUser user in users) {
+                UserWithRoles userWithRoles = new UserWithRoles { User = user, UserRoles = um.GetRoles(user.Id).ToList() };
+                usersWithRoles.Add(userWithRoles);
+            }
+
+
+            return View(usersWithRoles);  
             
         }
+        // GET: Account/EditRoles/1
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public ActionResult AddRoles(String id)
+        {
+            ApplicationUser user = db.Users.Find(id);
+            var um = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            var rm = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
+            List<IdentityRole> roles = rm.Roles.ToList();
+            var outObj = roles.Select(row => new SelectListItem() 
+            { Text = row.Name, Value = row.Id, Selected = false });
+            CheckBoxListViewModel checkBox = new CheckBoxListViewModel { Items = outObj };
+            UserRolesViewModel model = new UserRolesViewModel { User = user, Roles = checkBox };
+            return View(model);
 
+        }
+        // GET: Account/EditRoles/1
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public ActionResult AddRoles(UserRolesViewModel model)
+        {
+            ApplicationUser user = model.User;
+            string id = user.Id;
+            var um = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            var rm = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
+            string selected = Request.Form["SelectedRoles"];//.ToString();
+            string[] selectedList = selected.Split(',');
+            List<IdentityRole> allRoles = rm.Roles.ToList();
+            string roleId;
+            string roleName;
+            bool isUserRole;
+            foreach(IdentityRole role in allRoles) {
+                roleId = role.Id;
+                roleName = role.Name;
+                isUserRole = user.Roles.Contains(new IdentityUserRole { RoleId = roleId, UserId = id});
+                if(selectedList.Contains(roleId)) {
+                    if(!isUserRole) {
+                        um.AddToRole(id,roleName);
+                    } 
+                } else {
+                    if(isUserRole) {
+                        um.RemoveFromRole(id, roleName);
+                    }
+                }
+            }
+            db.SaveChanges();
+            return RedirectToAction("AllUsers");
 
+        }
         public AccountController()
         {
         }

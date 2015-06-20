@@ -206,6 +206,10 @@
     <Compile Include="Migrations\201506171410196_2015-06-17-02.Designer.cs">
       <DependentUpon>201506171410196_2015-06-17-02.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201506200316472_2015-06-20-01.cs" />
+    <Compile Include="Migrations\201506200316472_2015-06-20-01.Designer.cs">
+      <DependentUpon>201506200316472_2015-06-20-01.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Country.cs" />
@@ -288,6 +292,7 @@
     <Content Include="Views\Posts\Edit.cshtml" />
     <Content Include="Views\Posts\Index.cshtml" />
     <Content Include="Views\Home\Administration.cshtml" />
+    <Content Include="Views\Account\AddRoles.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Additional\" />
@@ -331,6 +336,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201506171410196_2015-06-17-02.resx">
       <DependentUpon>201506171410196_2015-06-17-02.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506200316472_2015-06-20-01.resx">
+      <DependentUpon>201506200316472_2015-06-20-01.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace TripsBlogProject.Models
 {
@@ -42,9 +43,36 @@ namespace TripsBlogProject.Models
         //public System.Data.Entity.DbSet<TripsBlogProject.Models.ApplicationUser> ApplicationUsers { get; set; }
     }
 
-    public class UserWithRoles : ApplicationUser
+    public class UserWithRoles 
     {
+        public ApplicationUser User { get; set; }
         public List<string> UserRoles { get; set; }
+        public List<IdentityRole> Roles { get; set; }
 
     }
+    public class UserRolesViewModel
+    {
+        public ApplicationUser User { get; set; }
+        public CheckBoxListViewModel Roles { get; set; }
+
+    }
+    /*
+    public class MyViewModel { 
+        public int Id { get; set; } 
+        public bool Checkbox { get; set; } 
+        public string Value { get; set; } 
+    }   */    
+    // view model for checklistbox     
+    public class CheckBoxListViewModel     {
+        public IEnumerable<SelectListItem> Items { get; set; }          
+        // the name of this list should be the same as of the CheckBoxes otherwise you will not get any result after post        
+        public List<string> SelectedValues { get; set; }     
+    }      
+// represents single check box item     
+    /*
+    public class CheckRolesListBoxItem     {         
+        public string Value { get; set; }         
+        public string Text { get; set; }         
+        public bool IsCheck { get; set; }     
+   }*/
 }

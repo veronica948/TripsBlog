@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TripsBlogProject.Models.ApplicationUser>
+﻿@model IEnumerable<TripsBlogProject.Models.UserWithRoles>
 
 @{
     ViewBag.Title = "AllUsers";
@@ -13,13 +13,13 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Email)
+            @Html.DisplayNameFor(model => model.User.Email)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.UserName)
+            @Html.DisplayNameFor(model => model.User.UserName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Roles)
+            @Html.DisplayNameFor(model => model.UserRoles)
         </th>
         <th></th>
     </tr>
@@ -27,18 +27,18 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Email)
+            @Html.DisplayFor(modelItem => item.User.Email)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.UserName)
+            @Html.DisplayFor(modelItem => item.User.UserName)
         </td>
         <td>        
-            @foreach (var role in item.Roles) {
-                <p>1</p>
+            @foreach (var role in item.UserRoles) {
+                <p>@role</p>
             }
         </td>
         <td>
-            @Html.ActionLink("Edit roles", "EditRoles", new { id=item.Id }) 
+            @Html.ActionLink("Add roles", "AddRoles", new { id = item.User.Id }) 
         </td>
     </tr>
 }
