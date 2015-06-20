@@ -28,6 +28,15 @@ namespace TripsBlogProject.Controllers
             return View(posts);
         }
 
+        public ActionResult MyPosts()
+        {
+            
+            ApplicationUser user = db.Users.First(p=>p.UserName == User.Identity.Name);
+            string id = user.Id;
+            var posts = db.Posts.Include(p => p.Author).Include(c => c.Country).Select(u => u.Author.Id == id).ToList();
+            return View(posts);
+        }
+
         // GET: Posts/Details/5
         public ActionResult Details(int? id)
         {
@@ -88,6 +97,7 @@ namespace TripsBlogProject.Controllers
             {
                 Country choosenCountry = db.Countries.Find(CreatePost.AllCountries.SelectedCountryId);
                 Post post = new Post { Title = CreatePost.Title, Country = choosenCountry, Place = CreatePost.Place, Description = CreatePost.Description };
+                var userName = User.Identity.Name;
                 var currentUser = db.Users.First(u => u.UserName == User.Identity.Name);
                 post.Author = currentUser;
                 string newFileName = "";

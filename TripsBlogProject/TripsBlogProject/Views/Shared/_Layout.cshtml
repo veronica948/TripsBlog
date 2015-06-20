@@ -26,7 +26,7 @@
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     *@
                     <li>@Html.ActionLink("Posts", "Index", "Posts")</li>
-                    <li>@Html.ActionLink("My posts", "", "Posts")</li>
+                    <li>@Html.ActionLink("My posts", "MyPosts", "Posts")</li>
                     <li>@Html.ActionLink("Countries", "All", "Countries")</li>
                     @if (this.User.IsInRole("Admin") || this.User.IsInRole("Moderator"))
                     {

@@ -38,9 +38,7 @@ namespace TripsBlogProject.Models
         public System.Data.Entity.DbSet<TripsBlogProject.Models.Country> Countries { get; set; }
 
         public System.Data.Entity.DbSet<TripsBlogProject.Models.Post> Posts { get; set; }
-        //public System.Data.Entity.DbSet<TripsBlogProject.Models.CountryImage> CountryImages { get; set; }
 
-        //public System.Data.Entity.DbSet<TripsBlogProject.Models.ApplicationUser> ApplicationUsers { get; set; }
     }
 
     public class UserWithRoles 
@@ -55,20 +53,6 @@ namespace TripsBlogProject.Models
         public IEnumerable<SelectListItem> Roles { get; set; }
 
     }
-    /*
-    public class MyViewModel { 
-        public int Id { get; set; } 
-        public bool Checkbox { get; set; } 
-        public string Value { get; set; } 
-    }   */    
-    // view model for checklistbox     
-   // public class CheckBoxListViewModel     {
-        //public IEnumerable<SelectListItem> Items { get; set; }          
-        // the name of this list should be the same as of the CheckBoxes otherwise you will not get any result after post        
-        //public List<string> SelectedValues { get; set; }     
-    //}      
-// represents single check box item     
-    
     public class CheckRolesListBoxItem     {         
         public string RoleId { get; set; }         
         public string RoleName { get; set; }         

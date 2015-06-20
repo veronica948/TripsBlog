@@ -293,6 +293,7 @@
     <Content Include="Views\Posts\Index.cshtml" />
     <Content Include="Views\Home\Administration.cshtml" />
     <Content Include="Views\Account\EditRoles.cshtml" />
+    <Content Include="Views\Posts\MyPosts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Additional\" />

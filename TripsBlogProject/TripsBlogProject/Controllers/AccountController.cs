@@ -11,6 +11,8 @@ using Microsoft.Owin.Security;
 using TripsBlogProject.Models;
 using System.Collections.Generic;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Net;
+using System.Data.Entity;
 
 namespace TripsBlogProject.Controllers
 {
@@ -34,16 +36,18 @@ namespace TripsBlogProject.Controllers
                 UserWithRoles userWithRoles = new UserWithRoles { User = user, UserRoles = um.GetRoles(user.Id).ToList() };
                 usersWithRoles.Add(userWithRoles);
             }
-
-
-            return View(usersWithRoles);  
-            
+            return View(usersWithRoles);          
         }
         // GET: Account/EditRoles/1
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public ActionResult EditRoles(String id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             ApplicationUser user = db.Users.Find(id);
             var um = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
             var rm = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
@@ -55,13 +59,13 @@ namespace TripsBlogProject.Controllers
                 isUserRole = um.IsInRole(id, role.Name);
                 checkRoles.Add(new CheckRolesListBoxItem { RoleId = role.Id, RoleName = role.Name, IsCheck = isUserRole });
             }
-            var outObj = checkRoles.Select(row => new SelectListItem() 
+            var rolesCheckBox = checkRoles.Select(row => new SelectListItem() 
             { Text = row.RoleName, Value = row.RoleId, Selected = row.IsCheck });
-            UserRolesViewModel model = new UserRolesViewModel { User = user, Roles = outObj };
+            UserRolesViewModel model = new UserRolesViewModel { User = user, Roles = rolesCheckBox };
             return View(model);
 
         }
-        // GET: Account/EditRoles/1
+
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public ActionResult EditRoles(UserRolesViewModel model)
@@ -94,6 +98,7 @@ namespace TripsBlogProject.Controllers
             return RedirectToAction("AllUsers");
 
         }
+
         public AccountController()
         {
         }
