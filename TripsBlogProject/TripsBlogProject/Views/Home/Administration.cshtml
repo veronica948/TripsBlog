@@ -8,4 +8,14 @@
 <div>
     <h3>@ViewBag.Message</h3>
 </div>
+<ul>
+    @if (this.User.IsInRole("Moderator") || this.User.IsInRole("Admin"))
+    { 
+        <li>@Html.ActionLink("Work with counrties", "Index","Countries")</li>
+    }
+    @if(this.User.IsInRole("Admin")) {
+        <li>@Html.ActionLink("Work with users", "AllUsers", "Account")</li> 
+    }     
+     
+</ul>
 

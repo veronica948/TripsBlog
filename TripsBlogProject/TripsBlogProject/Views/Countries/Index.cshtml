@@ -31,10 +31,14 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>*@
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.CountryId }) |
-                @Html.ActionLink("Details", "Details", new { id=item.CountryId })|
+                @if (this.User.IsInRole("Moderator")) { 
+                @Html.ActionLink("Edit", "Edit", new { id=item.CountryId }) <span>|</span>
+                @Html.ActionLink("Details", "Details", new { id=item.CountryId })    <span>|</span>
                 @Html.ActionLink("Upload new image", "UploadImage", new { id = item.CountryId })
-                @if(this.User.IsInRole("Admin")) {
+                }
+                @if (this.User.IsInRole("Admin"))
+                {
+                    <span>|</span>
                     @Html.ActionLink("Delete", "Delete", new { id=item.CountryId })
                 }
         </td>
