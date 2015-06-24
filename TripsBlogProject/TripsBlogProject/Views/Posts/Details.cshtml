@@ -31,10 +31,9 @@
             @Html.DisplayNameFor(model => model.Country)
         </dt>
         <dd>
-            <a href="Countries/Details/@Model.Country.CountryId">
-                @Model.Country.Name
-            </a>
-            @*@Html.ActionLink(Model.Country.Name, "Details", "Countries", new { id = Model.Country.CountryId })*@
+            <a href="/Countries/Details/@Model.Country.CountryId">@Model.Country.Name</a>
+
+            
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Place)
@@ -62,3 +61,6 @@
     }
     @Html.ActionLink("Back to all posts", "Index")
 </p>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

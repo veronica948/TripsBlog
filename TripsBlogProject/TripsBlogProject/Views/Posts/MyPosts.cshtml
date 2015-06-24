@@ -19,12 +19,10 @@
                     </u>
                 </h3>
                 <b>@Html.DisplayNameFor(model => model.Country)</b><span>:</span>
-                <a href="Countries/Details/@item.Country.CountryId">
-                    @item.Country.Name
-                </a>
+                    <a href="/Countries/Details/@item.Country.CountryId">@item.Country.Name</a>
+                    
                 <br />
-                @*@Html.ActionLink(item.Country.Name, "Details", "Countries", new { id = item.Country.CountryId })*@
-                <b>@Html.DisplayNameFor(model => model.Place)</b><span>:</span>
+               <b>@Html.DisplayNameFor(model => model.Place)</b><span>:</span>
                 @Html.DisplayFor(modelItem => item.Place)
                 <br />
                 @Html.DisplayFor(modelItem => item.Description)
@@ -42,5 +40,7 @@
         </tr>
     }
 </table>
-
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
 

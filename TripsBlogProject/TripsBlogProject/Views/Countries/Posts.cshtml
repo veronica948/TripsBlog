@@ -12,15 +12,14 @@
         <td>
             <h3>
                 <u>
-                    @Html.ActionLink(item.Title, "Details", new { id = item.PostId })
+                    @*@Html.ActionLink(item.Title, "Details", new { id = item.PostId })*@
+                    <a href="/Posts/Details/@item.PostId">@item.Title</a>
                 </u>
             </h3>
             <b>@Html.DisplayNameFor(model => model.Country)</b><span>:</span>
-            <a href="Countries/Details/@item.Country.CountryId">
                 @item.Country.Name
-            </a>
+
             <br />
-            @*@Html.ActionLink(item.Country.Name, "Details", "Countries", new { id = item.Country.CountryId })*@
             <b>@Html.DisplayNameFor(model => model.Place)</b><span>:</span>
             @Html.DisplayFor(modelItem => item.Place)
             <br />
@@ -43,5 +42,7 @@
 <p>
     @Html.ActionLink("Back to countries list", "All")
 </p>
-
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
 
