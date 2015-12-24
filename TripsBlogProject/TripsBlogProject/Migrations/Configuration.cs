@@ -7,12 +7,10 @@ namespace TripsBlogProject.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
     using TripsBlogProject.Models;
-    using System;
+    
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
@@ -41,25 +39,25 @@ using System.Web.Mvc;
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
 
             //-------Add roles ----------//
-            //var rm = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
-            //rm.Create(new IdentityRole("Admin"));
-            //rm.Create(new IdentityRole("Moderator"));
-            //rm.Create(new IdentityRole("User"));
-            //userManager.AddToRole(userManager.FindByEmail("admin@gmail.com").Id, "Admin");
-            //userManager.AddToRole(userManager.FindByEmail("admin@gmail.com").Id, "Moderator");
+            /*var rm = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
+            rm.Create(new IdentityRole("Admin"));
+            rm.Create(new IdentityRole("Moderator"));
+            rm.Create(new IdentityRole("User"));
+            userManager.AddToRole(userManager.FindByEmail("admin@gmail.com").Id, "Admin");
+            userManager.AddToRole(userManager.FindByEmail("admin@gmail.com").Id, "Moderator");*/
 
             //------------Add countries ---------------//
-            //string[] lines = System.IO.File.ReadAllLines(@"D:\Veronica\TripsBlog\TripsBlogProject\TripsBlogProject\Additional\countries.txt");
-            //Console.Write(lines.Length);
-            //int i = 0;
-            //foreach (string line in lines)
-            //{
-            //    // Use a tab to indent each line of the file.
-            //    Console.WriteLine("\t" + line);
-            //    context.Countries.Add(new Country { Name = line });
-            //    i++;
-            //}
-            //context.SaveChanges();
+            /*string[] lines = System.IO.File.ReadAllLines(@"D:\StudyProject\TripsBlog\TripsBlogProject\TripsBlogProject\Additional\countries.txt");
+            Console.Write(lines.Length);
+            int i = 0;
+            foreach (string line in lines)
+            {
+                // Use a tab to indent each line of the file.
+                Console.WriteLine("\t" + line);
+                context.Countries.Add(new Country { Name = line });
+                i++;
+            }
+            context.SaveChanges();*/
         }
     }
 }

@@ -9,6 +9,11 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using TripsBlogProject.Models;
+using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Auth;
+using Microsoft.WindowsAzure.Storage.Blob;
+using System.Configuration;
 
 namespace TripsBlogProject.Controllers
 {
@@ -52,6 +57,7 @@ namespace TripsBlogProject.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Country country = db.Countries.Find(id);
+            
             if (country == null)
             {
                 return HttpNotFound();
@@ -114,10 +120,43 @@ namespace TripsBlogProject.Controllers
                 string format = file.ContentType;
                 Console.Out.Write(format);
                 newFileName = Guid.NewGuid().ToString() + fileName; //global identificator
+
+
+                //cloud storage
+                CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+    ConfigurationManager.ConnectionStrings["StorageConnectionString"].ConnectionString);
+                CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+                CloudBlobContainer container = blobClient.GetContainerReference("countries");
+                container.CreateIfNotExists();
+                CloudBlockBlob blockBlob = container.GetBlockBlobReference(newFileName);
+                blockBlob.UploadFromStream(file.InputStream);
+
+                //local storage
                 var path = Path.Combine(Server.MapPath("~/Images/"), newFileName); //~ - The root
                 file.SaveAs(path);
+
+
+                
+
                 Country country = db.Countries.Find(id);
+
+                //delete previous image
+
+                CloudBlockBlob previousBlob = container.GetBlockBlobReference(country.ImageUrl);
+                previousBlob.Delete();
+
                 country.ImageUrl = newFileName;
+
+                //get url from cloud storage
+
+                // Retrieve reference to a blob
+                /*
+                CloudBlockBlob savedBlob = container.GetBlockBlobReference(newFileName);
+                country.ImageUrl = savedBlob.Uri.AbsolutePath;  ///???????
+                Console.Out.Write(country.ImageUrl);  */                                            
+
+
+
                 db.Entry(country).State = EntityState.Modified;
                 db.SaveChanges();
                 return /*View(country);*/ RedirectToAction("Details/" + country.CountryId);
