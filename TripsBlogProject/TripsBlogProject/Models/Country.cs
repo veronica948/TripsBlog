@@ -4,10 +4,11 @@ using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
+using Microsoft.WindowsAzure.Storage.Table;
 
 namespace TripsBlogProject.Models
 {
-    public class Country
+    public class Country:TableEntity
     {
         [Required]
         public int CountryId { get; set; }

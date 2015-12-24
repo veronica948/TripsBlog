@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.WindowsAzure.Storage.Table;
 
 namespace TripsBlogProject.Models
 {
-    public class Post
+    public class Post : TableEntity
     {
         [Required]
         public int PostId { get; set; }

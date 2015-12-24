@@ -10,6 +10,10 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using TripsBlogProject.Models;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Auth;
+using Microsoft.WindowsAzure.Storage.Table;
+using System.Configuration;
 
 namespace TripsBlogProject.Controllers
 {
@@ -17,11 +21,22 @@ namespace TripsBlogProject.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        //cloud
+        CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+    ConfigurationManager.ConnectionStrings["StorageConnectionString"].ConnectionString);
+
+
         // GET: Posts
         [HttpGet]
         public ActionResult Index()
         {
-            var posts = db.Posts.Include(p=>p.Author).Include(c=>c.Country).ToList();
+            // Create the table client.
+            CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
+            CloudTable table = tableClient.GetTableReference("posts");
+            TableQuery<Post> query = new TableQuery<Post>();
+            var posts = table.ExecuteQuery(query);
+            
+            //var posts = db.Posts.Include(p=>p.Author).Include(c=>c.Country).ToList();
             return View(posts);
         }
 
@@ -31,7 +46,14 @@ namespace TripsBlogProject.Controllers
         {         
             ApplicationUser user = db.Users.First(p=>p.UserName == User.Identity.Name);
             string id = user.Id;
-            var posts = db.Posts.Where(u => u.Author.Id == id).Include(p => p.Author).Include(c => c.Country).ToList();
+
+            //cloud
+            CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
+            CloudTable table = tableClient.GetTableReference("posts");
+            TableQuery<Post> query = new TableQuery<Post>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, id));//.Include(p => p.Author).Include(c => c.Country);
+            var posts = table.ExecuteQuery(query);
+
+            //var posts = db.Posts.Where(u => u.Author.Id == id).Include(p => p.Author).Include(c => c.Country).ToList();
             return View(posts);
         }
 
@@ -107,6 +129,15 @@ namespace TripsBlogProject.Controllers
                     post.Image = newFileName;
                 }
                 db.Posts.Add(post);
+
+
+                //cloud
+                CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
+                CloudTable table = tableClient.GetTableReference("posts");
+                TableOperation insertOperation = TableOperation.Insert(post);
+                table.Execute(insertOperation);
+
+                //local db
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

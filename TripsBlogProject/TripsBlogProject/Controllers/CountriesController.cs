@@ -13,6 +13,7 @@ using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.Table;
 using System.Configuration;
 
 namespace TripsBlogProject.Controllers
@@ -20,6 +21,8 @@ namespace TripsBlogProject.Controllers
     public class CountriesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+    ConfigurationManager.ConnectionStrings["StorageConnectionString"].ConnectionString);
 
         // GET: Countries
         [Authorize(Roles = "Moderator")]
@@ -57,6 +60,13 @@ namespace TripsBlogProject.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Country country = db.Countries.Find(id);
+            
+
+            //cloud
+            CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
+            CloudTable table = tableClient.GetTableReference("countries");
+            TableQuery<Country> query = new TableQuery<Country>().Where(TableQuery.GenerateFilterCondition("id", QueryComparisons.Equal, System.Convert.ToString(id)));
+            country = table.ExecuteQuery(query).First();
             
             if (country == null)
             {
@@ -123,8 +133,7 @@ namespace TripsBlogProject.Controllers
 
 
                 //cloud storage
-                CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
-    ConfigurationManager.ConnectionStrings["StorageConnectionString"].ConnectionString);
+                
                 CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
                 CloudBlobContainer container = blobClient.GetContainerReference("countries");
                 container.CreateIfNotExists();
