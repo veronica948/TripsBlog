@@ -1,0 +1,48 @@
+﻿@model IEnumerable<TripsBlogProject.Models.Country>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h3>The list of all countries</h3>
+@if(this.User.IsInRole("Admin")) {
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+}
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>*@
+            <th></th>
+        </tr>
+
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>*@
+            <td>
+                @if (this.User.IsInRole("Moderator")) { 
+                @Html.ActionLink("Edit", "Edit", new { id=item.CountryId }) <span>|</span>
+                @Html.ActionLink("Details", "Details", new { id=item.CountryId })    <span>|</span>
+                @Html.ActionLink("Upload new image", "UploadImage", new { id = item.CountryId })
+                }
+                @if (this.User.IsInRole("Admin"))
+                {
+                    <span>|</span>
+                    @Html.ActionLink("Delete", "Delete", new { id=item.CountryId })
+                }
+        </td>
+    </tr>
+}
+
+</table>

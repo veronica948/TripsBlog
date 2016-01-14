@@ -3,6 +3,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace TripsBlogProject.Models
 {
@@ -16,6 +18,9 @@ namespace TripsBlogProject.Models
             // Add custom user claims here
             return userIdentity;
         }
+        public List<Post> Posts { get; set; }
+        //List<IdentityRole> Roles { get; set; }
+        
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -29,5 +34,28 @@ namespace TripsBlogProject.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<TripsBlogProject.Models.Country> Countries { get; set; }
+
+        public System.Data.Entity.DbSet<TripsBlogProject.Models.Post> Posts { get; set; }
+
     }
+
+    public class UserWithRoles 
+    {
+        public ApplicationUser User { get; set; }
+        public List<string> UserRoles { get; set; }
+
+    }
+    public class UserRolesViewModel
+    {
+        public ApplicationUser User { get; set; }
+        public IEnumerable<SelectListItem> Roles { get; set; }
+
+    }
+    public class CheckRolesListBoxItem     {         
+        public string RoleId { get; set; }         
+        public string RoleName { get; set; }         
+        public bool IsCheck { get; set; }     
+   }
 }

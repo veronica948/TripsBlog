@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace TripsBlogProject.Models
 {
@@ -15,10 +16,18 @@ namespace TripsBlogProject.Models
         [DataType(DataType.Text)]
         public string Name { get; set; }
 
-        [Required]
+        
         [DataType(DataType.MultilineText)]
         public string Description { get; set; }
         
-        public CountryImage  ImageUrl {get; set;}
+        [DataType(DataType.ImageUrl)]
+        public string  ImageUrl {get; set;}
+    }
+    public class CountriesListViewModel
+    {
+        // Display Attribute will appear in the Html.LabelFor
+        [Display(Name = "Country")]
+        public int SelectedCountryId { get; set; }
+        public IEnumerable<SelectListItem> Countries { get; set; }
     }
 }

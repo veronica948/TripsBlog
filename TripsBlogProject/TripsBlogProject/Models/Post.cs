@@ -16,7 +16,7 @@ namespace TripsBlogProject.Models
         public string Title { get; set; }
 
         [Required]
-        public Country country { get; set; }
+        public Country Country { get; set; }
 
         [Required]
         [DataType(DataType.Text)]
@@ -28,7 +28,29 @@ namespace TripsBlogProject.Models
 
         [Required]
         public ApplicationUser Author { get; set; }
+        
+        [DataType(DataType.ImageUrl)]
+        public string  Image {get; set;}
+    }
+    public class CreatePostModel
+    {
+        [Required]
+        public int PostId { get; set; }
 
-        public PostImage  Image {get; set;}
+        [Required]
+        [DataType(DataType.Text)]
+        public string Title { get; set; }
+
+        [Required]
+        public CountriesListViewModel AllCountries { get; set; }
+
+        [Required]
+        [DataType(DataType.Text)]
+        public string Place { get; set; }
+
+        [Required]
+        [DataType(DataType.MultilineText)]
+        public string Description { get; set; }
+
     }
 }

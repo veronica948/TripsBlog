@@ -9,6 +9,10 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using TripsBlogProject.Models;
+using System.Collections.Generic;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.Net;
+using System.Data.Entity;
 
 namespace TripsBlogProject.Controllers
 {
@@ -17,6 +21,83 @@ namespace TripsBlogProject.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationDbContext db = new ApplicationDbContext();
+
+        // GET: Account/AllUsers
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public ActionResult AllUsers()
+        {
+            List<ApplicationUser> users = db.Users.ToList();
+            List<UserWithRoles> usersWithRoles = new List<UserWithRoles>();
+
+            var um = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            foreach(ApplicationUser user in users) {
+                UserWithRoles userWithRoles = new UserWithRoles { User = user, UserRoles = um.GetRoles(user.Id).ToList() };
+                usersWithRoles.Add(userWithRoles);
+            }
+            return View(usersWithRoles);          
+        }
+        // GET: Account/EditRoles/1
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public ActionResult EditRoles(String id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            ApplicationUser user = db.Users.Find(id);
+            var um = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            var rm = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
+            List<IdentityRole> roles = rm.Roles.ToList();
+            List<CheckRolesListBoxItem> checkRoles = new List<CheckRolesListBoxItem>();
+            bool isUserRole;
+            foreach (IdentityRole role in roles)
+            {
+                isUserRole = um.IsInRole(id, role.Name);
+                checkRoles.Add(new CheckRolesListBoxItem { RoleId = role.Id, RoleName = role.Name, IsCheck = isUserRole });
+            }
+            var rolesCheckBox = checkRoles.Select(row => new SelectListItem() 
+            { Text = row.RoleName, Value = row.RoleId, Selected = row.IsCheck });
+            UserRolesViewModel model = new UserRolesViewModel { User = user, Roles = rolesCheckBox };
+            return View(model);
+
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public ActionResult EditRoles(UserRolesViewModel model)
+        {
+            ApplicationUser user = model.User;
+            string id = user.Id;
+            var um = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            var rm = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
+            string selected = Request.Form["SelectedRoles"];
+            string[] selectedList = selected.Split(',');
+            List<IdentityRole> allRoles = rm.Roles.ToList();
+            string roleId;
+            string roleName;
+            bool isUserRole;          
+            foreach(IdentityRole role in allRoles) {
+                roleId = role.Id;
+                roleName = role.Name;
+                isUserRole = um.IsInRole(id, roleName);
+                if(selectedList.Contains(roleId)) {
+                    if(!isUserRole) {
+                        um.AddToRole(id,roleName);
+                    } 
+                } else {
+                    if(isUserRole) {
+                        um.RemoveFromRole(id, roleName);
+                    }
+                }
+            }
+            db.SaveChanges();
+            return RedirectToAction("AllUsers");
+
+        }
 
         public AccountController()
         {

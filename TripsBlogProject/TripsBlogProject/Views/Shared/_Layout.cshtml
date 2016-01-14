@@ -22,16 +22,25 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
                     @*
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     *@
-                    <li>@Html.ActionLink("Posts", "Index", "Post")</li>
-                    <li>@Html.ActionLink("My posts", "", "Post")</li>
+                    <li>@Html.ActionLink("Posts", "Index", "Posts")</li>
+                    <li>@Html.ActionLink("My posts", "MyPosts", "Posts")</li>
+                    <li>@Html.ActionLink("Countries", "All", "Countries")</li>
+                    @if (this.User.IsInRole("Admin") || this.User.IsInRole("Moderator"))
+                    {
+                        <li>@Html.ActionLink("Administration", "Administration", "Home")</li>
+                    }
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
+    </div>
+    <div>
+        <p>
+            @Html.ActionLink("Create New Post", "Create", "Posts")
+        </p>
     </div>
     <div class="container body-content">
         @RenderBody()

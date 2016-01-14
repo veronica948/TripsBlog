@@ -19,7 +19,12 @@ namespace TripsBlogProject.Controllers
 
             return View();
         }
+        public ActionResult Administration()
+        {
+            ViewBag.Message = "Admin and moderator page";
 
+            return View();
+        }
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";

@@ -1,0 +1,48 @@
+﻿@model IEnumerable<TripsBlogProject.Models.Post>
+@{
+    ViewBag.Title = "Posts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Posts</h2>
+<table class="table">
+   @foreach (var item in Model)
+   {
+    <tr>
+        <td>
+            <h3>
+                <u>
+                    @*@Html.ActionLink(item.Title, "Details", new { id = item.PostId })*@
+                    <a href="/Posts/Details/@item.PostId">@item.Title</a>
+                </u>
+            </h3>
+            <b>@Html.DisplayNameFor(model => model.Country)</b><span>:</span>
+                @item.Country.Name
+
+            <br />
+            <b>@Html.DisplayNameFor(model => model.Place)</b><span>:</span>
+            @Html.DisplayFor(modelItem => item.Place)
+            <br />
+            @Html.DisplayFor(modelItem => item.Description)
+            @if (this.User.Identity.Name == item.Author.UserName)
+            {
+                <br />
+                @Html.ActionLink("Delete", "Delete", new { id = item.PostId })
+            }
+        </td>
+        <td>
+            @if (item.Image != null)
+            {
+                <img src="~/Images/@item.Image" />
+            }
+        </td>
+    </tr>
+   }
+</table>
+<p>
+    @Html.ActionLink("Back to countries list", "All")
+</p>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

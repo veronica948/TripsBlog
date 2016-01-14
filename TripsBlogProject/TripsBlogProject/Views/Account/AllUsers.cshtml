@@ -1,0 +1,43 @@
+﻿@model IEnumerable<TripsBlogProject.Models.UserWithRoles>
+
+@{
+    ViewBag.Title = "AllUsers";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>All Users</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.User.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User.UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserRoles)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.User.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.User.UserName)
+        </td>
+        <td>        
+            @foreach (var role in item.UserRoles) {
+                <p>@role</p>
+            }
+        </td>
+        <td>
+            @Html.ActionLink("Edit roles", "EditRoles", new { id = item.User.Id }) 
+        </td>
+    </tr>
+}
+
+</table>

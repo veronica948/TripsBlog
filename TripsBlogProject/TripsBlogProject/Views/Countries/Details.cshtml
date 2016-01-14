@@ -1,0 +1,40 @@
+﻿@model TripsBlogProject.Models.Country
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <h4>@Model.Name</h4>
+    <hr />
+    @if (Model.ImageUrl != null)
+    {
+        <img src="~/Images/@Model.ImageUrl" />
+    }
+    
+    <dl class="dl-horizontal">
+      
+        @if (Model.Description != null) { 
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        }     
+
+    </dl>
+    
+</div>
+<p>
+    @if (this.User.IsInRole("Moderator") == true) 
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.CountryId }) 
+        <br/>
+    }
+    @Html.ActionLink("Posts about this country", "Posts", new { id = Model.CountryId })
+    <br/>
+    @Html.ActionLink("Back to list of countries", "All")
+</p>

@@ -1,0 +1,32 @@
+﻿@model TripsBlogProject.Models.UserRolesViewModel
+@{
+    ViewBag.Title = "EditRoles";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Edit roles</h2>
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model => model.User.Id)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Roles, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @foreach (var role in Model.Roles)
+            {
+                @Html.CheckBox("SelectedRoles", role.Selected, new { value = role.Value });
+                <span>@role.Text</span>
+            
+            }
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+    <div>
+        @Html.ActionLink("Back to List", "AllUsers")
+    </div>
+}
+

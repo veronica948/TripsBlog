@@ -1,0 +1,66 @@
+﻿@model TripsBlogProject.Models.Post
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>@Model.Title</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+    @if (Model.Image != null)
+    {
+        @*<dt>
+                @Html.DisplayNameFor(model => model.Image)
+            </dt>*@
+
+        <dd>
+
+            <img src="~/Images/@Model.Image" />
+        </dd>
+    }
+        <dt>
+            @Html.DisplayNameFor(model => model.Author)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Author.UserName)
+        </dd>
+        
+        <dt>
+            @Html.DisplayNameFor(model => model.Country)
+        </dt>
+        <dd>
+            <a href="/Countries/Details/@Model.Country.CountryId">@Model.Country.Name</a>
+
+            
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Place)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Place)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        
+          
+
+    </dl>
+</div>
+<p>
+    @if (this.User.Identity.Name == Model.Author.UserName) {
+        @Html.ActionLink("Delete", "Delete", new { id = Model.PostId })
+    }
+    @Html.ActionLink("Back to all posts", "Index")
+</p>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
