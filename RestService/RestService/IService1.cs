@@ -46,4 +46,17 @@ namespace RestService
         [DataMember]
         public string Name { get; set; }
     }
+
+    [DataContract]
+    public class Country
+    {
+        [DataMember]
+        public int CountryId { get; set; }
+
+        [DataMember]
+        public string Name { get; set; }
+
+        [DataMember]
+        public string Description { get; set; }
+    }
 }

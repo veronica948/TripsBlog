@@ -295,6 +295,7 @@
     <Content Include="Views\Account\EditRoles.cshtml" />
     <Content Include="Views\Posts\MyPosts.cshtml" />
     <Content Include="Views\Countries\Posts.cshtml" />
+    <Content Include="Views\Countries\Details1.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Additional\" />

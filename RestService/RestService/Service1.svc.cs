@@ -13,20 +13,20 @@ namespace RestService
     public class Service1 : IService1
     {
         Dictionary<int, Person> db = new Dictionary<int, Person>();
-        Service1()
+        public Service1()
         {
             db.Add(1, new Person() { Id = 1, Name = "Tom" });
             db.Add(2, new Person() { Id = 2, Name = "Mark" });
 
         }
-        List<Person> getAll(int id) {
+        public List<Person> getAll(int id) {
             return null;//db.All();
         }
-        Person get(int id) {
+        public Person get(int id) {
             return null;
         }
 
-        void create(Person person)
+        public void create(Person person)
         {
             if (person != null)
             {
@@ -34,12 +34,12 @@ namespace RestService
             }
         }
 
-        void update(Person person)
+        public void update(Person person)
         {
           
         }
 
-        void delete(int id)
+        public void delete(int id)
         {
 
         }
