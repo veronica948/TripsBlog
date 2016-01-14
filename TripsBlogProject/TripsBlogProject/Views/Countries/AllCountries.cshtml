@@ -22,10 +22,10 @@
     {
         <tr>
             <td>
-                @Html.ActionLink(item.Name, "Details", new { id = item.CountryId })
+                @Html.ActionLink(item.Name, "Details", new { name = item.Name })
             </td>
             <td>
-                @Html.ActionLink("Posts about this country", "Posts", new { id = item.CountryId })
+                @Html.ActionLink("Posts about this country", "Posts", new { name = item.Name })
             </td>
         </tr>
     }

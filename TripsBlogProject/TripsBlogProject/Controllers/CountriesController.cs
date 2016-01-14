@@ -30,10 +30,11 @@ namespace TripsBlogProject.Controllers
             //    return View("AllCountries", db.Countries.ToList());
             //}
         }
+
         [HttpGet]
-        public ActionResult Posts(int id)
+        public ActionResult Posts(string name)
         {
-            var posts = db.Posts.Where(u => u.Country.CountryId == id).Include(p => p.Author).Include(c => c.Country).ToList();
+            var posts = db.Posts.Where(u => u.Country== name).Include(p => p.Author).ToList();
             return View(posts);
         }
 
@@ -45,7 +46,22 @@ namespace TripsBlogProject.Controllers
         }
         // GET: Countries/Details/5
         [HttpGet]
-        public ActionResult Details(int? id)
+        public ActionResult Details(string name)
+        {
+            if (name == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Country country = db.Countries.Where(u => u.Name.Equals(name)).First();
+            if (country == null)
+            {
+                return HttpNotFound();
+            }
+            return View(country);
+        }
+        // GET: Countries/Details/5
+        [HttpGet]
+        public ActionResult Details1(int id)
         {
             if (id == null)
             {
@@ -85,49 +101,6 @@ namespace TripsBlogProject.Controllers
             return View(country);
         }
 
-        [Authorize(Roles = "Moderator")]
-        //Get Countries/UploadImage/1
-        [HttpGet]
-        public ActionResult UploadImage(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Country country = db.Countries.Find(id);
-            if (country == null)
-            {
-                return HttpNotFound();
-            }
-            return View(country);
-        }
-
-        [Authorize(Roles = "Moderator")]
-        //Post   Countries/UploadImage/1
-        [HttpPost]
-        public ActionResult UploadImage(/*[Bind(Include = "CountryId")] Country country*/ int id, HttpPostedFileBase file)
-        {
-            string newFileName = "";
-            if (file != null && file.ContentLength > 0)
-            {
-                var fileName = Path.GetFileName(file.FileName);
-                string format = file.ContentType;
-                Console.Out.Write(format);
-                newFileName = Guid.NewGuid().ToString() + fileName; //global identificator
-                var path = Path.Combine(Server.MapPath("~/Images/"), newFileName); //~ - The root
-                file.SaveAs(path);
-                Country country = db.Countries.Find(id);
-                country.ImageUrl = newFileName;
-                db.Entry(country).State = EntityState.Modified;
-                db.SaveChanges();
-                return /*View(country);*/ RedirectToAction("Details/" + country.CountryId);
-            }
-            else
-            {
-                Country country = db.Countries.Find(id);
-                return View(country);
-            }            
-        }
         [Authorize(Roles = "Moderator")]
         // GET: Countries/Edit/5
         public ActionResult Edit(int? id)

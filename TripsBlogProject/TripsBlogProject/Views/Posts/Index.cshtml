@@ -18,8 +18,8 @@
                 @Html.ActionLink(item.Title, "Details", new { id = item.PostId })</u></h3>
 
             <b>@Html.DisplayNameFor(model => model.Country)</b><span>:</span>
-            <a href="Countries/Details/@item.Country.CountryId">
-                @item.Country.Name
+            <a href="Countries/Details/@item.Country">
+                @item.Country
             </a>
             <br /> 
             <b>@Html.DisplayNameFor(model => model.Place)</b><span>:</span>

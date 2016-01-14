@@ -21,7 +21,7 @@ namespace TripsBlogProject.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            var posts = db.Posts.Include(p=>p.Author).Include(c=>c.Country).ToList();
+            var posts = db.Posts.Include(p=>p.Author).ToList();
             return View(posts);
         }
 
@@ -31,7 +31,7 @@ namespace TripsBlogProject.Controllers
         {         
             ApplicationUser user = db.Users.First(p=>p.UserName == User.Identity.Name);
             string id = user.Id;
-            var posts = db.Posts.Where(u => u.Author.Id == id).Include(p => p.Author).Include(c => c.Country).ToList();
+            var posts = db.Posts.Where(u => u.Author.Id == id).Include(p => p.Author).ToList();
             return View(posts);
         }
 
@@ -43,7 +43,7 @@ namespace TripsBlogProject.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Post post = db.Posts.Include(p=>p.Author).Include(c=>c.Country).First(p=>p.PostId == id);
+            Post post = db.Posts.Include(p=>p.Author).First(p=>p.PostId == id);
             if (post == null)
             {
                 return HttpNotFound();
@@ -51,7 +51,7 @@ namespace TripsBlogProject.Controllers
             return View(post);
         }
 
-
+        /*
         private IEnumerable<SelectListItem> GetCountriesList()
         {
             List<Country> countries = db.Countries.ToList();
@@ -63,7 +63,7 @@ namespace TripsBlogProject.Controllers
                                 });
 
             return new SelectList(countriesList, "Value", "Text");
-        }
+        }*/
 
 
 
@@ -72,13 +72,7 @@ namespace TripsBlogProject.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            var model = new CreatePostModel
-            {
-                AllCountries = new CountriesListViewModel
-            {
-                Countries = GetCountriesList()
-            }
-            };           
+            var model = new CreatePostModel();                                   
             return View(model);
         }
 
@@ -86,12 +80,11 @@ namespace TripsBlogProject.Controllers
         [HttpPost]
         [Authorize]
         //[ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PostId,Title,AllCountries, Place, Description")] CreatePostModel CreatePost, HttpPostedFileBase file)
+        public ActionResult Create([Bind(Include = "PostId,Title,Country, Place, Description")] CreatePostModel CreatePost, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
-                Country choosenCountry = db.Countries.Find(CreatePost.AllCountries.SelectedCountryId);
-                Post post = new Post { Title = CreatePost.Title, Country = choosenCountry, Place = CreatePost.Place, Description = CreatePost.Description };
+                Post post = new Post { Title = CreatePost.Title, Country = CreatePost.Country, Place = CreatePost.Place, Description = CreatePost.Description };
                 var userName = User.Identity.Name;
                 var currentUser = db.Users.First(u => u.UserName == User.Identity.Name);
                 post.Author = currentUser;

@@ -31,7 +31,9 @@
             @Html.DisplayNameFor(model => model.Country)
         </dt>
         <dd>
-            <a href="/Countries/Details/@Model.Country.CountryId">@Model.Country.Name</a>
+            @Html.DisplayFor(model => model.Country)
+
+            <!--<a href="/Countries/Details/@Model.Country">@Model.Country</a>-->
 
             
         </dd>

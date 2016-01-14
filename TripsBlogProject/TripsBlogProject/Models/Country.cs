@@ -20,8 +20,6 @@ namespace TripsBlogProject.Models
         [DataType(DataType.MultilineText)]
         public string Description { get; set; }
         
-        [DataType(DataType.ImageUrl)]
-        public string  ImageUrl {get; set;}
     }
     public class CountriesListViewModel
     {

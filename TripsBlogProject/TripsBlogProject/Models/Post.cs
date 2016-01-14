@@ -16,7 +16,8 @@ namespace TripsBlogProject.Models
         public string Title { get; set; }
 
         [Required]
-        public Country Country { get; set; }
+        [DataType(DataType.Text)]
+        public string Country { get; set; }
 
         [Required]
         [DataType(DataType.Text)]
@@ -28,9 +29,9 @@ namespace TripsBlogProject.Models
 
         [Required]
         public ApplicationUser Author { get; set; }
-        
+
         [DataType(DataType.ImageUrl)]
-        public string  Image {get; set;}
+        public string Image { get; set; }
     }
     public class CreatePostModel
     {
@@ -42,7 +43,8 @@ namespace TripsBlogProject.Models
         public string Title { get; set; }
 
         [Required]
-        public CountriesListViewModel AllCountries { get; set; }
+        [DataType(DataType.Text)]
+        public string Country { get; set; }
 
         [Required]
         [DataType(DataType.Text)]
