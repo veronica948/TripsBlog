@@ -7,7 +7,7 @@ using System.Web;
 
 namespace CountryService.Models
 {
-    [DataContract]
+    [DataContract(Namespace="")]
     public class Country
     {
         [Required]

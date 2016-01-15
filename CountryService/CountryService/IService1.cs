@@ -16,23 +16,41 @@ namespace CountryService
 
         [OperationContract]
         [WebInvoke(Method = "GET", UriTemplate = "/country", ResponseFormat = WebMessageFormat.Json)]
-        List<Country> getAll();
+        List<Country> GetAll();
 
         [OperationContract]
-        [WebInvoke(Method = "GET", UriTemplate = "/country/{id}", ResponseFormat = WebMessageFormat.Json)]
-        Country get(int id);
+        [WebInvoke(Method = "GET", UriTemplate = "/countries/{id}", ResponseFormat = WebMessageFormat.Json)]
+        Country Get(int id);
 
         [OperationContract]
-        [WebInvoke(Method = "POST", UriTemplate = "/country")]
-        void create(Country person);
+        [WebInvoke(Method = "POST", UriTemplate = "countries")]
+        void Create(Country country);
 
         [OperationContract]
-        [WebInvoke(Method = "PUT", UriTemplate = "/country")]
-        void update(Country person);
+        [WebInvoke(Method = "PUT", UriTemplate = "countries")]
+        void Update(Country country);
 
         [OperationContract]
-        [WebInvoke(Method = "DELETE", UriTemplate = "/country/{id}")]
-        void delete(int id);
+        [WebInvoke(Method = "DELETE", UriTemplate = "/countries/{id}")]
+        void Delete(int id);
+
+        [OperationContract]
+        [WebInvoke(Method = "GET", UriTemplate = "/countries/name/{start}", ResponseFormat = WebMessageFormat.Json)]
+        List<Country> GetByName(string start);
+
+    }
+    [DataContract]
+    public class Country
+    {
+       
+        [DataMember]
+        public int CountryId { get; set; }
+      
+        [DataMember]
+        public string Name { get; set; }
+
+        [DataMember]
+        public string Description { get; set; }
     }
 
 

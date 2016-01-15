@@ -1,5 +1,4 @@
-﻿using CountryService.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -14,36 +13,41 @@ namespace CountryService
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
     public class Service1 : IService1
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
-        public List<Country> getAll()
+        //private CountryService.Models.ApplicationDbContext db = new CountryService.Models.ApplicationDbContext();
+
+        public List<Country> GetAll()
         {
-            return db.Countries.ToList();
+            return null;//db.Countries.ToList();
         }
 
-        public Country get(int id)
+        public Country Get(int id)
         {
-            return db.Countries.Find(id);
+            int k = id;
+            return null;// db.Countries.Find(id);
         }
 
-        public void create(Country country)
+        public void Create(Country country)
         {
-            db.Countries.Add(country);
-            db.SaveChanges();
+            //db.Countries.Add(country);
+            //db.SaveChanges();
         }
 
-        public void update(Country country)
+        public void Update(Country country)
         {
-            db.Entry(country).State = EntityState.Modified;
-            db.SaveChanges();
+            //db.Entry(country).State = EntityState.Modified;
+            //db.SaveChanges();
         }
 
-        public void delete(int id) { 
+        public void Delete(int id) { 
         //HttpStatusCode.BadRequest
-            Country country = db.Countries.Find(id);
-            db.Countries.Remove(country);
-            db.SaveChanges();
+            //Country country = db.Countries.Find(id);
+            //db.Countries.Remove(country);
+            //db.SaveChanges();
         }
-
+        public List<Country> GetByName(string start)
+        {
+            return null;
+        }
         
     }
 }

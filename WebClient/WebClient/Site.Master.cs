@@ -72,10 +72,11 @@ namespace WebClient
 
         protected void Button1_Click(object sender, EventArgs e)
         {
+           
             ServiceReference1.Service1Client proxy = new ServiceReference1.Service1Client();
             Label1.Text = proxy.GetMessage(TextBox1.Text);
             int[] array = { 1, 2 };
-            array = proxy.GetModifiedArray(array, 2);
+            ServiceReference1.MagicData mg = proxy.UpdateNumber(new ServiceReference1.MagicData{"dd", 2});
             string modifiedArray = "";
             foreach(int a in array) {
                 modifiedArray += a + " ";

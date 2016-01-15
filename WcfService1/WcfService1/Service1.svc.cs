@@ -14,20 +14,14 @@ namespace WcfService1
     {
         public string GetMessage(string name)
         {
-            return string.Format("Hello: {0} ! Welcome!", name);
+            return string.Format("Hello: {0} !", name);
         }
 
-        public int[] GetModifiedArray(int[] array, int value)
+        public MagicData UpdateNumber(MagicData previousData)
         {
-            if (array == null)
-            {
-                throw new ArgumentNullException("Array is null");
-            }
-            for (int i = 0; i < array.Length; i++)
-            {
-                array[i] += value;
-            }
-            return array;
+            Random rnd = new Random();
+            previousData.Number += rnd.Next(-100,100);
+            return previousData;
         }
     }
 }

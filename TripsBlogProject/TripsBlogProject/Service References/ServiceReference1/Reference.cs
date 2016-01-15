@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WebClient.ServiceReference1 {
+namespace TripsBlogProject.ServiceReference1 {
     using System.Runtime.Serialization;
     using System;
     
@@ -85,19 +85,19 @@ namespace WebClient.ServiceReference1 {
         System.Threading.Tasks.Task<string> GetMessageAsync(string name);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/UpdateNumber", ReplyAction="http://tempuri.org/IService1/UpdateNumberResponse")]
-        WebClient.ServiceReference1.MagicData UpdateNumber(WebClient.ServiceReference1.MagicData previousData);
+        TripsBlogProject.ServiceReference1.MagicData UpdateNumber(TripsBlogProject.ServiceReference1.MagicData previousData);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/UpdateNumber", ReplyAction="http://tempuri.org/IService1/UpdateNumberResponse")]
-        System.Threading.Tasks.Task<WebClient.ServiceReference1.MagicData> UpdateNumberAsync(WebClient.ServiceReference1.MagicData previousData);
+        System.Threading.Tasks.Task<TripsBlogProject.ServiceReference1.MagicData> UpdateNumberAsync(TripsBlogProject.ServiceReference1.MagicData previousData);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IService1Channel : WebClient.ServiceReference1.IService1, System.ServiceModel.IClientChannel {
+    public interface IService1Channel : TripsBlogProject.ServiceReference1.IService1, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class Service1Client : System.ServiceModel.ClientBase<WebClient.ServiceReference1.IService1>, WebClient.ServiceReference1.IService1 {
+    public partial class Service1Client : System.ServiceModel.ClientBase<TripsBlogProject.ServiceReference1.IService1>, TripsBlogProject.ServiceReference1.IService1 {
         
         public Service1Client() {
         }
@@ -126,11 +126,11 @@ namespace WebClient.ServiceReference1 {
             return base.Channel.GetMessageAsync(name);
         }
         
-        public WebClient.ServiceReference1.MagicData UpdateNumber(WebClient.ServiceReference1.MagicData previousData) {
+        public TripsBlogProject.ServiceReference1.MagicData UpdateNumber(TripsBlogProject.ServiceReference1.MagicData previousData) {
             return base.Channel.UpdateNumber(previousData);
         }
         
-        public System.Threading.Tasks.Task<WebClient.ServiceReference1.MagicData> UpdateNumberAsync(WebClient.ServiceReference1.MagicData previousData) {
+        public System.Threading.Tasks.Task<TripsBlogProject.ServiceReference1.MagicData> UpdateNumberAsync(TripsBlogProject.ServiceReference1.MagicData previousData) {
             return base.Channel.UpdateNumberAsync(previousData);
         }
     }
