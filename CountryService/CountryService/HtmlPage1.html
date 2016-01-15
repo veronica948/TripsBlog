@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+    <div id="countriesList">
+
+    </div>
+    <script>
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                var answer = xmlhttp.responseText;
+                var json = JSON.parse(answer);
+                document.getElementById("countriesList").innerText = json;
+                //document.getElementById("email").setAttribute('value', json.email);
+            }
+        }
+        xmlhttp.open("GET", "country", true);
+        xmlhttp.send();
+
+    </script>
+</body>
+</html>

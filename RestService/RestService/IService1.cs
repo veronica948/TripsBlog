@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
@@ -51,12 +52,16 @@ namespace RestService
     public class Country
     {
         [DataMember]
+        [Required]
         public int CountryId { get; set; }
 
         [DataMember]
+        [Required]
+        [DataType(DataType.Text)]
         public string Name { get; set; }
 
         [DataMember]
+        [DataType(DataType.MultilineText)]
         public string Description { get; set; }
     }
 }
