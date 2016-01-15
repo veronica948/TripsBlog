@@ -32,3 +32,20 @@
         </p>
     </div>
 </div>
+<div id="countriesList">
+
+</div>
+<script>
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            var answer = xmlhttp.responseText;
+            var json = JSON.parse(answer);
+            document.getElementById("countriesList").innerText = json;
+            //document.getElementById("email").setAttribute('value', json.email);
+        }
+    }
+    xmlhttp.open("GET", "getEmail", true);
+    xmlhttp.send();
+    
+</script>
