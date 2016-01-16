@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CountryService.Models;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -11,25 +12,26 @@ namespace CountryService
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in code, svc and config file together.
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
+    //[ServiceBehavior(AddressFilterMode = AddressFilterMode.Any)]
     public class Service1 : IService1
     {
-        //private CountryService.Models.ApplicationDbContext db = new CountryService.Models.ApplicationDbContext();
+        private CountryService.Models.ApplicationDbContext db = new CountryService.Models.ApplicationDbContext();
 
         public List<Country> GetAll()
         {
-            return null;//db.Countries.ToList();
+            
+            return db.Countries.ToList();
         }
 
-        public Country Get(int id)
+        public Country Get(string id)
         {
-            int k = id;
-            return null;// db.Countries.Find(id);
+            return db.Countries.Find(System.Convert.ToInt32(id));
         }
 
         public void Create(Country country)
         {
-            //db.Countries.Add(country);
-            //db.SaveChanges();
+            db.Countries.Add(country);
+            db.SaveChanges();
         }
 
         public void Update(Country country)
@@ -38,7 +40,8 @@ namespace CountryService
             //db.SaveChanges();
         }
 
-        public void Delete(int id) { 
+        public void Delete(string id)
+        { 
         //HttpStatusCode.BadRequest
             //Country country = db.Countries.Find(id);
             //db.Countries.Remove(country);

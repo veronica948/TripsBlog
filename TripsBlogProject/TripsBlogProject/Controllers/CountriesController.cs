@@ -34,7 +34,7 @@ namespace TripsBlogProject.Controllers
         [HttpGet]
         public ActionResult Posts(string name)
         {
-            var posts = db.Posts.Where(u => u.Country== name).Include(p => p.Author).ToList();
+            var posts = db.Posts.Where(u => u.Country == name).Include(p => p.Author).Distinct().ToList();
             return View(posts);
         }
 
@@ -42,7 +42,7 @@ namespace TripsBlogProject.Controllers
         [HttpGet]
         public ActionResult All()
         {
-            return View("AllCountries",db.Countries.ToList());
+            return View("AllCountries");
         }
         // GET: Countries/Details/5
         [HttpGet]

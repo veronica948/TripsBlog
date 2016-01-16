@@ -1,5 +1,5 @@
 ﻿
-@model IEnumerable<TripsBlogProject.Models.Country>
+
 
 @{
     ViewBag.Title = "All countries";
@@ -8,28 +8,53 @@
 
 <h2>All countries</h2>
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
 
-        </th>
-    </tr>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.ActionLink(item.Name, "Details", new { name = item.Name })
-            </td>
-            <td>
-                @Html.ActionLink("Posts about this country", "Posts", new { name = item.Name })
-            </td>
-        </tr>
+<table id="countriesList" class="table"></table>
+<script>
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            var answer = xmlhttp.responseText;
+            var json = JSON.parse(answer);
+            var table = document.getElementById("countriesList");
+            for (var i = 0; i < json.length; i++) {
+                var country = json[i];
+                var row = table.insertRow(i);
+                var column;
+                column = row.insertCell(0);
+                column.innerHTML = country["Name"];
+                column = row.insertCell(1);
+                var button = document.createElement("input");
+                //Assign different attributes to the element. 
+                button.setAttribute("type", "button");
+                button.setAttribute("id", "buttonId");
+                button.setAttribute("value", "Details");
+                button.setAttribute("name", country["CountryId"]);          
+                //button.setAttribute("onclick", "showCountryData()");
+                column.appendChild(button);
+                var link = document.createElement('a');
+                link.setAttribute('href', "userPage?userId=" + country["CountryId"]);
+                link.innerHTML = "Details";
+                column.appendChild(link);
+                var link2 = document.createElement('a');
+                link2.setAttribute('href', "Posts?name=" + country["Name"]);
+                link2.innerHTML = "Posts";
+                column.appendChild(link2);
+                
+            }
+            //document.getElementsByTagName("input").addEventListener("click", function () { showCountryData()});
+            //document.getElementById("email").setAttribute('value', json.email);
+        }
+    }
+    xmlhttp.open("GET", "http://localhost:49485/Service1.svc/countries", true);
+    xmlhttp.send();
+
+    function showCountryData() {
+        alert("jhjh");
     }
 
-</table>
+</script>
+
 
 
