@@ -7,7 +7,7 @@
 <script>
     function getNames() {
         var select = document.getElementById("names");
-        var newHtml = "";
+        var newHtml = "<option selected='' value='0' disabled='disabled'>Countries</option>";
         var start = document.getElementById("Country").value;
         $.ajax({
             url: "http://localhost:49485/Service1.svc/countries/name/" + start,
@@ -30,9 +30,6 @@
     function insertValue() {
         var select = document.getElementById("names");
         var input = document.getElementById("Country");
-        alert(input.value);
-        alert(select.value);
-
         input.value = select.value;
     }
 
@@ -75,7 +72,7 @@
     @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
                 *@
                 <br/>
-                <select id="names" class="hidden" onchange="insertValue()"></select>
+                <select id="names" class="hidden" onchange="insertValue()" multiple></select>
             </div>
         </div>
 
