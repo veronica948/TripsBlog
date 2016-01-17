@@ -11,37 +11,45 @@
         @Html.ActionLink("Create New", "Create")
     </p>
 }
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>*@
-            <th></th>
-        </tr>
 
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>*@
-            <td>
-                @if (this.User.IsInRole("Moderator")) { 
-                @Html.ActionLink("Edit", "Edit", new { id=item.CountryId }) <span>|</span>
-                @Html.ActionLink("Details", "Details1", new { id=item.CountryId})   
-                }
-                @if (this.User.IsInRole("Admin"))
-                {
-                    <span>|</span>
-                    @Html.ActionLink("Delete", "Delete", new { id=item.CountryId })
-                }
-        </td>
-    </tr>
-}
 
-</table>
+
+<table id="countriesList" class="table"></table>
+<script>
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            var answer = xmlhttp.responseText;
+            var json = JSON.parse(answer);
+            var table = document.getElementById("countriesList");
+            for (var i = 0; i < json.length; i++) {
+                var country = json[i];
+                var row = table.insertRow(i);
+                var column;
+                column = row.insertCell(0);
+                column.innerHTML = country["Name"];
+                column = row.insertCell(1);
+                var button = document.createElement("input");
+                var link = document.createElement('a');
+                link.setAttribute('href', "Countries/Details/" + country["CountryId"]);
+                link.innerHTML = " Details ";
+                column.appendChild(link);
+                var link2 = document.createElement('a');
+                link2.setAttribute('href', "Countries/Edit/" + country["CountryId"]);
+                link2.innerHTML = " Edit ";
+                column.appendChild(link2);
+                var link3 = document.createElement('a');
+                link3.setAttribute('href', "Countries/Delete/" + country["CountryId"]);
+                link3.innerHTML = " Delete ";
+                column.appendChild(link3);
+                
+            }
+        }
+    }
+    xmlhttp.open("GET", "http://localhost:49485/Service1.svc/countries", true);
+    xmlhttp.send();
+
+</script>
+
+
+

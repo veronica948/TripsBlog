@@ -13,22 +13,18 @@ namespace TripsBlogProject.Controllers
     {
         public ActionResult Index()
         {
-            ServiceReference1.MagicData mg = new ServiceReference1.MagicData { Phrase = User.Identity.Name, Number = 14 };
-            ServiceReference1.Service1Client proxy = new ServiceReference1.Service1Client();
-            ServiceReference1.MagicData newMg = proxy.UpdateNumber(mg);
-            ViewBag.MagicNumber = "Random number: " + newMg.Number;
-            ViewBag.Phrase = proxy.GetMessage(User.Identity.Name);
-            ServiceReference2.GlobalWeatherSoapClient proxy2 = new ServiceReference2.GlobalWeatherSoapClient();
-            var answer = proxy2.GetWeather("Minsk", "Belarus");
-            ViewBag.Weather = parseXml(answer);
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult Weather()
         {
             ViewBag.Message = "Your application description page.";
-            
 
+            //external service
+
+            ServiceReference2.GlobalWeatherSoapClient proxy2 = new ServiceReference2.GlobalWeatherSoapClient();
+            var answer = proxy2.GetWeather("Minsk", "Belarus");
+            ViewBag.Weather = parseXml(answer);
             return View();
         }
         public ActionResult Administration()
@@ -37,9 +33,17 @@ namespace TripsBlogProject.Controllers
 
             return View();
         }
-        public ActionResult Contact()
+        [Authorize]
+        public ActionResult Welcome()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "Your welcome page.";
+            //internal service
+            
+             ServiceReference1.MagicData mg = new ServiceReference1.MagicData { Phrase = User.Identity.Name, Number = 14 };
+             ServiceReference1.Service1Client proxy = new ServiceReference1.Service1Client();
+             ServiceReference1.MagicData newMg = proxy.UpdateNumber(mg);
+             ViewBag.MagicNumber = "Random number: " + newMg.Number;
+             ViewBag.Phrase = proxy.GetMessage(User.Identity.Name);
 
             return View();
         }

@@ -37,7 +37,7 @@ namespace CountryService
 
         [OperationContract]
         [WebInvoke(Method = "GET", UriTemplate = "/countries/name/{start}", ResponseFormat = WebMessageFormat.Json)]
-        List<Country> GetByName(string start);
+        List<string> GetByName(string start);
 
     }
     /*

@@ -19,7 +19,7 @@
                     </u>
                 </h3>
                 <b>@Html.DisplayNameFor(model => model.Country)</b><span>:</span>
-                    <a href="/Countries/Details/@item.Country">@item.Country</a>
+                    @Html.DisplayFor(modelItem => item.Country)
                     
                 <br />
                <b>@Html.DisplayNameFor(model => model.Place)</b><span>:</span>

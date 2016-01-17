@@ -24,4 +24,18 @@ namespace CountryService.Models
         [DataMember]
         public string Description { get; set; }
     }
+
+    [DataContract(Namespace = "")]
+    public class CreateCountry
+    {
+        [Required]
+        [DataType(DataType.Text)]
+        [DataMember]
+        public string Name { get; set; }
+
+
+        [DataType(DataType.MultilineText)]
+        [DataMember]
+        public string Description { get; set; }
+    }
 }

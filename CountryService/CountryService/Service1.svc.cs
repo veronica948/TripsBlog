@@ -25,31 +25,67 @@ namespace CountryService
 
         public Country Get(string id)
         {
-            return db.Countries.Find(System.Convert.ToInt32(id));
+            WebOperationContext ctx = WebOperationContext.Current;
+            Country country = null;
+            if (id == null)
+            {
+                ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.BadRequest;
+                return country;
+            }
+            country = db.Countries.Find(System.Convert.ToInt32(id));
+            if (country == null)
+            {
+                ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.NotFound;
+            }
+            return country;
         }
 
         public void Create(Country country)
         {
+            WebOperationContext ctx = WebOperationContext.Current;
+            if (country == null)
+            {
+                ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.BadRequest;
+                return;
+            }
             db.Countries.Add(country);
             db.SaveChanges();
+            
+            ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.Created;
         }
 
         public void Update(Country country)
         {
-            //db.Entry(country).State = EntityState.Modified;
-            //db.SaveChanges();
+            WebOperationContext ctx = WebOperationContext.Current;
+            if (country == null)
+            {
+                ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.BadRequest;
+                return;
+            }
+            db.Entry(country).State = EntityState.Modified;
+            db.SaveChanges();
         }
 
         public void Delete(string id)
-        { 
-        //HttpStatusCode.BadRequest
-            //Country country = db.Countries.Find(id);
-            //db.Countries.Remove(country);
-            //db.SaveChanges();
-        }
-        public List<Country> GetByName(string start)
         {
-            return null;
+            WebOperationContext ctx = WebOperationContext.Current;
+            if (id == null)
+            {
+                ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.BadRequest;
+                return;
+            }
+            Country country = db.Countries.Find(int.Parse(id));
+            db.Countries.Remove(country);
+            db.SaveChanges();
+        }
+        public List<string> GetByName(string start)
+        {
+            var countriesList = db.Countries.Where(u => u.Name.StartsWith(start)).ToList();
+            List<string> nameList = new List<string>();
+            foreach(var country in countriesList) {
+                nameList.Add(country.Name);
+            }
+            return nameList;
         }
         
     }

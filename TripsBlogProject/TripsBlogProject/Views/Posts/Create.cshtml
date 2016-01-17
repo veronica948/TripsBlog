@@ -4,6 +4,30 @@
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<script>
+    function getNames() {
+        alert('in');
+        var select = document.getElementById("names");
+        var newHtml = "";
+        var start = document.getElementById("Country").value;
+        $.ajax({
+            url: "http://localhost:49485/Service1.svc/countries/name/" + start,
+            success: function (data) {
+                alert(data);
+                var json = JSON.parse(data);
+                for (var i = 0; i < json.length; i++) {
+                    alert(json[i]);
+                    newHtml += "<option>" + json[i] + "</option>";
+                }
+                select.innerHTML = newHtml;
+            }
+        });
+        
+        //document.getElementById(divName).appendChild(newDiv);
+    }
+
+
+</script>
 
 <h2>Create</h2>
 
@@ -34,8 +58,12 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Country, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Country, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
+                <select id="names"></select>
+                <input id="Country" value="" onchange="getNames()" type="text" name="Country" class="form-control text-box single-line" />
+                @*
+    @Html.EditorFor(model => model.Country, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
+                *@
             </div>
         </div>
 

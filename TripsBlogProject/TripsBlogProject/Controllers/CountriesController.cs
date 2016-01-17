@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -15,20 +17,16 @@ namespace TripsBlogProject.Controllers
     public class CountriesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private string URL = "http://localhost:49485/Service1.svc/countries";
 
         // GET: Countries
-        [Authorize(Roles = "Moderator")]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public ActionResult Index()
         {
-            //if (Roles.GetRolesForUser().Contains("Moderator"))
             {
-                return View(db.Countries.ToList());
+                return View();
             }
-            //else
-            //{
-            //    return View("AllCountries", db.Countries.ToList());
-            //}
         }
 
         [HttpGet]
@@ -44,36 +42,34 @@ namespace TripsBlogProject.Controllers
         {
             return View("AllCountries");
         }
+
         // GET: Countries/Details/5
         [HttpGet]
-        public ActionResult Details(string name)
-        {
-            if (name == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Country country = db.Countries.Where(u => u.Name.Equals(name)).First();
-            if (country == null)
-            {
-                return HttpNotFound();
-            }
-            return View(country);
-        }
-        // GET: Countries/Details/5
-        [HttpGet]
-        public ActionResult Details1(int id)
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Country country = db.Countries.Find(id);
-            if (country == null)
+            var request = (HttpWebRequest)WebRequest.Create(URL + "/" + id);
+            request.Method = WebRequestMethods.Http.Get;
+            HttpWebResponse responce = request.GetResponse() as HttpWebResponse;
+            if (responce.StatusCode != HttpStatusCode.OK)
+            {
+                throw new HttpException();
+            }
+            Stream respStream = responce.GetResponseStream();
+            StreamReader reader = new StreamReader(respStream);
+            string json = reader.ReadToEnd();
+            if (json == null)
             {
                 return HttpNotFound();
             }
+            Country country = JsonConvert.DeserializeObject<Country>(json);
+            
             return View(country);
         }
+
 
         // GET: Countries/Create
         [HttpGet]
@@ -93,15 +89,27 @@ namespace TripsBlogProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Countries.Add(country);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var request = (HttpWebRequest)WebRequest.Create(URL);
+                request.Method = WebRequestMethods.Http.Post;
+                request.ContentType = "application/json; charset=utf-8";
+                string json = JsonConvert.SerializeObject(country);
+                using (var requestStream = request.GetRequestStream())
+                {
+                    var bytes = Encoding.UTF8.GetBytes(json);
+                    requestStream.Write(bytes, 0, bytes.Length);
+                }
+                //request.
+                HttpWebResponse responce = request.GetResponse() as HttpWebResponse;
+                if (responce.StatusCode != HttpStatusCode.Created)
+                {
+                    throw new HttpException();
+                }
             }
 
-            return View(country);
+            return RedirectToAction("Index");
         }
 
-        [Authorize(Roles = "Moderator")]
+        [Authorize(Roles = "Admin")]
         // GET: Countries/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -109,26 +117,49 @@ namespace TripsBlogProject.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Country country = db.Countries.Find(id);
-            if (country == null)
+            var request = (HttpWebRequest)WebRequest.Create(URL + "/" + id);
+            request.Method = WebRequestMethods.Http.Get;
+            HttpWebResponse responce = request.GetResponse() as HttpWebResponse;
+            if (responce.StatusCode != HttpStatusCode.OK)
+            {
+                throw new HttpException();
+            }
+            Stream respStream = responce.GetResponseStream();
+            StreamReader reader = new StreamReader(respStream);
+            string json = reader.ReadToEnd();
+            if (json == null)
             {
                 return HttpNotFound();
             }
+            Country country = JsonConvert.DeserializeObject<Country>(json);
             return View(country);
         }
 
         // POST: Countries/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize(Roles = "Moderator")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "CountryId,Name,Description,ImageUrl")] Country country)
+        public ActionResult Edit([Bind(Include = "CountryId,Name,Description")] Country country)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(country).State = EntityState.Modified;
-                db.SaveChanges();
+                var request = (HttpWebRequest)WebRequest.Create(URL);
+                request.Method = WebRequestMethods.Http.Put;
+                request.ContentType = "application/json; charset=utf-8";
+                string json = JsonConvert.SerializeObject(country);
+                using (var requestStream = request.GetRequestStream())
+                {
+                    var bytes = Encoding.UTF8.GetBytes(json);
+                    requestStream.Write(bytes, 0, bytes.Length);
+                }
+                //request.
+                HttpWebResponse responce = request.GetResponse() as HttpWebResponse;
+                if (responce.StatusCode != HttpStatusCode.OK)
+                {
+                    throw new HttpException();
+                }
                 return RedirectToAction("Index");
             }
             return View(country);
@@ -142,11 +173,21 @@ namespace TripsBlogProject.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Country country = db.Countries.Find(id);
-            if (country == null)
+            var request = (HttpWebRequest)WebRequest.Create(URL + "/" + id);
+            request.Method = WebRequestMethods.Http.Get;
+            HttpWebResponse responce = request.GetResponse() as HttpWebResponse;
+            if (responce.StatusCode != HttpStatusCode.OK)
+            {
+                throw new HttpException();
+            }
+            Stream respStream = responce.GetResponseStream();
+            StreamReader reader = new StreamReader(respStream);
+            string json = reader.ReadToEnd();
+            if (json == null)
             {
                 return HttpNotFound();
             }
+            Country country = JsonConvert.DeserializeObject<Country>(json);
             return View(country);
         }
 
@@ -156,9 +197,13 @@ namespace TripsBlogProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Country country = db.Countries.Find(id);
-            db.Countries.Remove(country);
-            db.SaveChanges();
+            var request = (HttpWebRequest)WebRequest.Create(URL + "/" + id);
+            request.Method = "DELETE";
+            HttpWebResponse responce = request.GetResponse() as HttpWebResponse;
+            if (responce.StatusCode != HttpStatusCode.OK)
+            {
+                throw new HttpException();
+            }
             return RedirectToAction("Index");
         }
 

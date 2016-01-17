@@ -26,33 +26,19 @@
                 column.innerHTML = country["Name"];
                 column = row.insertCell(1);
                 var button = document.createElement("input");
-                //Assign different attributes to the element. 
-                button.setAttribute("type", "button");
-                button.setAttribute("id", "buttonId");
-                button.setAttribute("value", "Details");
-                button.setAttribute("name", country["CountryId"]);          
-                //button.setAttribute("onclick", "showCountryData()");
-                column.appendChild(button);
                 var link = document.createElement('a');
-                link.setAttribute('href', "userPage?userId=" + country["CountryId"]);
-                link.innerHTML = "Details";
+                link.setAttribute('href', "Details/" + country["CountryId"]);
+                link.innerHTML = "Details ";
                 column.appendChild(link);
                 var link2 = document.createElement('a');
                 link2.setAttribute('href', "Posts?name=" + country["Name"]);
-                link2.innerHTML = "Posts";
-                column.appendChild(link2);
-                
+                link2.innerHTML = " Posts";
+                column.appendChild(link2);               
             }
-            //document.getElementsByTagName("input").addEventListener("click", function () { showCountryData()});
-            //document.getElementById("email").setAttribute('value', json.email);
         }
     }
     xmlhttp.open("GET", "http://localhost:49485/Service1.svc/countries", true);
     xmlhttp.send();
-
-    function showCountryData() {
-        alert("jhjh");
-    }
 
 </script>
 

@@ -13,10 +13,10 @@
     
     <div class="form-horizontal">
         <h4>Country</h4>
+        <p>@Model.Name</p>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.CountryId)
-        @Html.HiddenFor(model => model.ImageUrl)
         @Html.HiddenFor(model => model.Name)
 
         @*<div class="form-group">
@@ -26,7 +26,7 @@
                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
             </div>
         </div>*@
-
+        
         <div class="form-group">
             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
