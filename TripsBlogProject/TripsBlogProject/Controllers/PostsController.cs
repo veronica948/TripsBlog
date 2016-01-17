@@ -51,22 +51,6 @@ namespace TripsBlogProject.Controllers
             return View(post);
         }
 
-        /*
-        private IEnumerable<SelectListItem> GetCountriesList()
-        {
-            List<Country> countries = db.Countries.ToList();
-            var countriesList = countries.Select(x =>
-                                new SelectListItem
-                                {
-                                    Value = x.CountryId.ToString(),
-                                    Text = x.Name
-                                });
-
-            return new SelectList(countriesList, "Value", "Text");
-        }*/
-
-
-
         // GET: Posts/Create
         [Authorize]
         [HttpGet]
@@ -99,6 +83,17 @@ namespace TripsBlogProject.Controllers
                     file.SaveAs(path);
                     post.Image = newFileName;
                 }
+
+                //cloud storage
+                /*
+                CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+                    ConfigurationManager.ConnectionStrings["StorageConnectionString"].ConnectionString);
+                CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+                CloudBlobContainer container = blobClient.GetContainerReference("countries");
+                container.CreateIfNotExists();
+                CloudBlockBlob blockBlob = container.GetBlockBlobReference(newFileName);
+                blockBlob.UploadFromStream(file.InputStream);*/
+
                 db.Posts.Add(post);
                 db.SaveChanges();
                 return RedirectToAction("Index");

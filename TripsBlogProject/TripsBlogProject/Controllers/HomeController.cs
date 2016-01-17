@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
@@ -20,11 +22,28 @@ namespace TripsBlogProject.Controllers
         {
             ViewBag.Message = "Your application description page.";
 
-            //external service
+            //external soap service
 
             ServiceReference2.GlobalWeatherSoapClient proxy2 = new ServiceReference2.GlobalWeatherSoapClient();
             var answer = proxy2.GetWeather("Minsk", "Belarus");
             ViewBag.Weather = parseXml(answer);
+
+            //external rest service
+            string url = "http://services.groupkt.com/country/get/iso2code/";
+            string code = "BY";
+            var request = (HttpWebRequest)WebRequest.Create(url + code);
+            request.Method = WebRequestMethods.Http.Get;
+            HttpWebResponse responce = request.GetResponse() as HttpWebResponse;
+            if (responce.StatusCode != HttpStatusCode.OK)
+            {
+                throw new HttpException();
+            }
+            Stream respStream = responce.GetResponseStream();
+            StreamReader reader = new StreamReader(respStream);
+            string json = reader.ReadToEnd();
+
+            JSONResponse resp = JsonConvert.DeserializeObject<JSONResponse>(json);
+            ViewBag.Country = code + " - " + resp.RestResponse.Result.Name;
             return View();
         }
         public ActionResult Administration()
@@ -64,4 +83,28 @@ namespace TripsBlogProject.Controllers
             return output.ToString();
         }
     }
+
+    public class JSONResponse
+    {
+        public RestResponse RestResponse { get; set; }
+    }
+    public class RestResponse {
+        /*"RestResponse" : {
+    "messages" : [ "More webservices are available at http://www.groupkt.com/post/f2129b88/services.htm", "Country found matching code [BY]." ],
+    "result" : {
+      "name" : "Belarus",
+      "alpha2_code" : "BY",
+      "alpha3_code" : "BLR"
+    }*/
+
+        public string[] Messages{get;set;}
+        public Result Result{get;set;}
+  }
+    public class Result
+    {
+        public string Name { get; set; }
+        public string Alpha2_code {get;set;}
+        public string Alpha3_code {get;set;}
+    }
+
 }
