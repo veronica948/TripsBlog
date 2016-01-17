@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.Entity;
 using System.IO;
@@ -80,20 +83,37 @@ namespace TripsBlogProject.Controllers
                     Console.Out.Write(format);
                     newFileName = Guid.NewGuid().ToString() + fileName; //global identificator
                     var path = Path.Combine(Server.MapPath("~/Images/"), newFileName); //~ - The root
-                    file.SaveAs(path);
+                    
                     post.Image = newFileName;
+
+                    //cloud storage
+                    try
+                    {
+                        string connectionString = "DefaultEndpointsProtocol=https;AccountName=tripblog2016;AccountKey=oMyvt61c71AoPwO+1CfBC3p9iKPnCrP3ahUwC2ZMcB/rCBGBJw0f/NXXyVjwAjzw70dFwPhNRBM04VslKLjdmQ==";
+
+                        CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connectionString
+                           );
+                        CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+                        CloudBlobContainer container = blobClient.GetContainerReference("images");
+                        container.SetPermissions(
+                            new BlobContainerPermissions
+                            {
+                                PublicAccess =
+                                    BlobContainerPublicAccessType.Blob
+                            });
+
+                        CloudBlockBlob blockBlob = container.GetBlockBlobReference(newFileName);
+                        blockBlob.UploadFromStream(file.InputStream);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Cannot connect to storage");
+                    }
+                    //local
+                    file.SaveAs(path);
+
                 }
-
-                //cloud storage
-                /*
-                CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
-                    ConfigurationManager.ConnectionStrings["StorageConnectionString"].ConnectionString);
-                CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-                CloudBlobContainer container = blobClient.GetContainerReference("countries");
-                container.CreateIfNotExists();
-                CloudBlockBlob blockBlob = container.GetBlockBlobReference(newFileName);
-                blockBlob.UploadFromStream(file.InputStream);*/
-
+               
                 db.Posts.Add(post);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -128,6 +148,27 @@ namespace TripsBlogProject.Controllers
             Post post = db.Posts.Find(id);
             db.Posts.Remove(post);
             db.SaveChanges();
+            try
+            {
+                if (post.Image != null)
+                {
+                    var path = Path.Combine(Server.MapPath("~/Images/"), post.Image);
+                    System.IO.File.Delete(path);
+                    string connectionString = "DefaultEndpointsProtocol=https;AccountName=tripblog2016;AccountKey=oMyvt61c71AoPwO+1CfBC3p9iKPnCrP3ahUwC2ZMcB/rCBGBJw0f/NXXyVjwAjzw70dFwPhNRBM04VslKLjdmQ==";
+
+                    CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connectionString
+                       );
+                    CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+                    CloudBlobContainer container = blobClient.GetContainerReference("images");
+
+                    CloudBlockBlob blockBlob = container.GetBlockBlobReference(post.Image);
+                    blockBlob.Delete();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Cannot connect to storage");
+            }
             return RedirectToAction("Index");
         }
 

@@ -23,27 +23,27 @@ namespace TripsBlogProject.Controllers
             ViewBag.Message = "Your application description page.";
 
             //external soap service
-
-            ServiceReference2.GlobalWeatherSoapClient proxy2 = new ServiceReference2.GlobalWeatherSoapClient();
-            var answer = proxy2.GetWeather("Minsk", "Belarus");
-            ViewBag.Weather = parseXml(answer);
-
-            //external rest service
-            string url = "http://services.groupkt.com/country/get/iso2code/";
-            string code = "BY";
-            var request = (HttpWebRequest)WebRequest.Create(url + code);
-            request.Method = WebRequestMethods.Http.Get;
-            HttpWebResponse responce = request.GetResponse() as HttpWebResponse;
-            if (responce.StatusCode != HttpStatusCode.OK)
+            try
             {
-                throw new HttpException();
-            }
-            Stream respStream = responce.GetResponseStream();
-            StreamReader reader = new StreamReader(respStream);
-            string json = reader.ReadToEnd();
+                ServiceReference2.GlobalWeatherSoapClient proxy2 = new ServiceReference2.GlobalWeatherSoapClient();
+                var answer = proxy2.GetWeather("Minsk", "Belarus");
+                ViewBag.Weather = parseXml(answer);
 
-            JSONResponse resp = JsonConvert.DeserializeObject<JSONResponse>(json);
-            ViewBag.Country = code + " - " + resp.RestResponse.Result.Name;
+                //external rest service
+                string url = "http://services.groupkt.com/country/get/iso2code/";
+                string code = "BY";
+                var request = (HttpWebRequest)WebRequest.Create(url + code);
+                request.Method = WebRequestMethods.Http.Get;
+                HttpWebResponse responce = request.GetResponse() as HttpWebResponse;
+                Stream respStream = responce.GetResponseStream();
+                StreamReader reader = new StreamReader(respStream);
+                string json = reader.ReadToEnd();
+
+                JSONResponse resp = JsonConvert.DeserializeObject<JSONResponse>(json);
+                ViewBag.Country = code + " - " + resp.RestResponse.Result.Name;
+            } catch(Exception e) {
+                ViewBag.Error = "Error while connecting to the service";
+            }
             return View();
         }
         public ActionResult Administration()
@@ -57,12 +57,16 @@ namespace TripsBlogProject.Controllers
         {
             ViewBag.Message = "Your welcome page.";
             //internal service
-            
-             ServiceReference1.MagicData mg = new ServiceReference1.MagicData { Phrase = User.Identity.Name, Number = 14 };
-             ServiceReference1.Service1Client proxy = new ServiceReference1.Service1Client();
-             ServiceReference1.MagicData newMg = proxy.UpdateNumber(mg);
-             ViewBag.MagicNumber = "Random number: " + newMg.Number;
-             ViewBag.Phrase = proxy.GetMessage(User.Identity.Name);
+            try
+            {
+                ServiceReference1.MagicData mg = new ServiceReference1.MagicData { Phrase = User.Identity.Name, Number = 14 };
+                ServiceReference1.Service1Client proxy = new ServiceReference1.Service1Client();
+                ServiceReference1.MagicData newMg = proxy.UpdateNumber(mg);
+                ViewBag.MagicNumber = "Random number: " + newMg.Number;
+                ViewBag.Phrase = proxy.GetMessage(User.Identity.Name);
+            } catch(Exception e) {
+                ViewBag.Error = "Error while connecting to the service";
+            }
 
             return View();
         }
