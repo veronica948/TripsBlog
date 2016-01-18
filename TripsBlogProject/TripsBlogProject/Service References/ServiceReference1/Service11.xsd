@@ -1,10 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/WcfService1" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/WcfService1" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:complexType name="MagicData">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="Number" type="xs:int" />
-      <xs:element minOccurs="0" name="Phrase" nillable="true" type="xs:string" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="MagicData" nillable="true" type="tns:MagicData" />
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:49979/Service1.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/HelpService" />
+  <xs:element name="GetMessage">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetMessageResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetMessageResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateNumber">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/HelpService" minOccurs="0" name="previousData" nillable="true" type="q1:MagicData" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateNumberResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/HelpService" minOccurs="0" name="UpdateNumberResult" nillable="true" type="q2:MagicData" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
 </xs:schema>

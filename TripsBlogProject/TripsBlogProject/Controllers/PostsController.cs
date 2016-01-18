@@ -89,6 +89,7 @@ namespace TripsBlogProject.Controllers
                     //cloud storage
                     try
                     {
+                        //change AccountName and AccountKey
                         string connectionString = "DefaultEndpointsProtocol=https;AccountName=tripblog2016;AccountKey=oMyvt61c71AoPwO+1CfBC3p9iKPnCrP3ahUwC2ZMcB/rCBGBJw0f/NXXyVjwAjzw70dFwPhNRBM04VslKLjdmQ==";
 
                         CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connectionString
@@ -154,6 +155,8 @@ namespace TripsBlogProject.Controllers
                 {
                     var path = Path.Combine(Server.MapPath("~/Images/"), post.Image);
                     System.IO.File.Delete(path);
+
+                    //change AccountName and AccountKey
                     string connectionString = "DefaultEndpointsProtocol=https;AccountName=tripblog2016;AccountKey=oMyvt61c71AoPwO+1CfBC3p9iKPnCrP3ahUwC2ZMcB/rCBGBJw0f/NXXyVjwAjzw70dFwPhNRBM04VslKLjdmQ==";
 
                     CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connectionString

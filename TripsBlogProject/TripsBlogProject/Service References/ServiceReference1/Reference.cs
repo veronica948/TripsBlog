@@ -15,7 +15,7 @@ namespace TripsBlogProject.ServiceReference1 {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="MagicData", Namespace="http://schemas.datacontract.org/2004/07/WcfService1")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="MagicData", Namespace="http://schemas.datacontract.org/2004/07/HelpService")]
     [System.SerializableAttribute()]
     public partial class MagicData : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
