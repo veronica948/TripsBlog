@@ -89,13 +89,7 @@ namespace TripsBlogProject.Controllers
                     //cloud storage
                     try
                     {
-                        //change AccountName and AccountKey
-                        string connectionString = "DefaultEndpointsProtocol=https;AccountName=tripblog2016;AccountKey=oMyvt61c71AoPwO+1CfBC3p9iKPnCrP3ahUwC2ZMcB/rCBGBJw0f/NXXyVjwAjzw70dFwPhNRBM04VslKLjdmQ==";
-
-                        CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connectionString
-                           );
-                        CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-                        CloudBlobContainer container = blobClient.GetContainerReference("images");
+                        CloudBlobContainer container = getCloudContainer();
                         container.SetPermissions(
                             new BlobContainerPermissions
                             {
@@ -156,14 +150,9 @@ namespace TripsBlogProject.Controllers
                     var path = Path.Combine(Server.MapPath("~/Images/"), post.Image);
                     System.IO.File.Delete(path);
 
-                    //change AccountName and AccountKey
-                    string connectionString = "DefaultEndpointsProtocol=https;AccountName=tripblog2016;AccountKey=oMyvt61c71AoPwO+1CfBC3p9iKPnCrP3ahUwC2ZMcB/rCBGBJw0f/NXXyVjwAjzw70dFwPhNRBM04VslKLjdmQ==";
+                    //cloud
 
-                    CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connectionString
-                       );
-                    CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-                    CloudBlobContainer container = blobClient.GetContainerReference("images");
-
+                    CloudBlobContainer container = getCloudContainer();
                     CloudBlockBlob blockBlob = container.GetBlockBlobReference(post.Image);
                     blockBlob.Delete();
                 }
@@ -173,6 +162,17 @@ namespace TripsBlogProject.Controllers
                 Console.WriteLine("Cannot connect to storage");
             }
             return RedirectToAction("Index");
+        }
+
+        private CloudBlobContainer getCloudContainer()
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["StorageConnectionString"].ConnectionString;//"DefaultEndpointsProtocol=https;AccountName=tripblog2016;AccountKey=oMyvt61c71AoPwO+1CfBC3p9iKPnCrP3ahUwC2ZMcB/rCBGBJw0f/NXXyVjwAjzw70dFwPhNRBM04VslKLjdmQ==";
+
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connectionString
+               );
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+            CloudBlobContainer container = blobClient.GetContainerReference("images");
+            return container;
         }
 
         protected override void Dispose(bool disposing)
